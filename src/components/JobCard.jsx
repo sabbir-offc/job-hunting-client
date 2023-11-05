@@ -1,7 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import PropTypes from "prop-types";
 
-const JobCard = ({ job }) => {
+const JobCard = ({ job, loading }) => {
   const {
     job_image,
     job_title,
@@ -13,6 +13,9 @@ const JobCard = ({ job }) => {
     job_application_deadline,
     job_application_number,
   } = job;
+  if (loading) {
+    return <p>loadadfkajfkjaskdfjkjfkhajkhfjk</p>;
+  }
   return (
     <div className="w-[300px] rounded-md border">
       <img

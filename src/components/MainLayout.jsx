@@ -74,21 +74,20 @@ const MainLayout = ({ children }) => {
             <div className="hidden lg:block">
               <ul className="menu menu-horizontal space-x-3">{links}</ul>
             </div>
-            {user && (
-              <div className="flex items-center gap-4">
-                {!user && (
-                  <NavLink
-                    to="/login"
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-black font-bold rounded-md border-2 border-[#7091F5] px-4 py-2"
-                        : "bg-[#7091F5] font-medium text-white px-4 py-2 "
-                    }
-                  >
-                    Login
-                  </NavLink>
-                )}
 
+            <div className="flex items-center gap-4">
+              {!user ? (
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-black font-bold rounded-md border-2 border-[#7091F5] px-4 py-2"
+                      : "bg-[#7091F5] font-medium text-white px-4 py-2 "
+                  }
+                >
+                  Login
+                </NavLink>
+              ) : (
                 <div className="dropdown dropdown-end">
                   <label
                     tabIndex={0}
@@ -118,8 +117,8 @@ const MainLayout = ({ children }) => {
                     </li>
                   </ul>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
         {children}

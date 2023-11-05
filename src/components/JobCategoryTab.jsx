@@ -4,21 +4,33 @@ import "react-tabs/style/react-tabs.css";
 import JobCard from "./JobCard";
 import useAxios from "../hooks/useAxios";
 const JobCategoryTab = () => {
-  const [jobs, setJobs] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState({});
-
   const axios = useAxios();
+  const [jobs, setJobs] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState("");
   useEffect(() => {
-    axios.get(`/jobs?job_category=${selectedCategory}`).then((res) => {
-      const response = res.data;
-      setJobs(response);
-    });
+    if (selectedCategory === "") {
+      axios.get("/jobs").then((res) => {
+        setJobs(res.data);
+        setLoading(false);
+      });
+    } else {
+      axios.get(`/jobs?job_category=${selectedCategory}`).then((res) => {
+        setJobs(res.data);
+        setLoading(false);
+      });
+    }
   }, [selectedCategory, axios]);
+
+  if (loading) {
+    return <p>Loading</p>;
+  }
+
   return (
     <div>
-      <Tabs defaultIndex={1} onSelect={(index) => console.log(index)}>
+      <Tabs defaultIndex={0}>
         <TabList>
-          <Tab>All Jobs</Tab>
+          <Tab onClick={() => setSelectedCategory("")}>All Jobs</Tab>
           <Tab onClick={() => setSelectedCategory("On Site Job")}>
             On Site Job
           </Tab>
@@ -32,7 +44,11 @@ const JobCategoryTab = () => {
           <div className="grid md:grid-cols-2 gap-5 lg:grid-cols-4 place-items-center">
             {jobs &&
               jobs.map((job) => (
-                <JobCard key={job.job_title} job={job}></JobCard>
+                <JobCard
+                  key={job.job_salary}
+                  loading={loading}
+                  job={job}
+                ></JobCard>
               ))}
           </div>
         </TabPanel>
@@ -40,7 +56,7 @@ const JobCategoryTab = () => {
           <div className="grid md:grid-cols-2 gap-5 lg:grid-cols-4 place-items-center">
             {jobs &&
               jobs.map((job) => (
-                <JobCard key={job.job_title} job={job}></JobCard>
+                <JobCard key={job.job_salary} job={job}></JobCard>
               ))}
           </div>
         </TabPanel>
@@ -48,7 +64,7 @@ const JobCategoryTab = () => {
           <div className="grid md:grid-cols-2 gap-5 lg:grid-cols-4 place-items-center">
             {jobs &&
               jobs.map((job) => (
-                <JobCard key={job.job_title} job={job}></JobCard>
+                <JobCard key={job.job_salary} job={job}></JobCard>
               ))}
           </div>
         </TabPanel>
@@ -56,7 +72,7 @@ const JobCategoryTab = () => {
           <div className="grid md:grid-cols-2 gap-5 lg:grid-cols-4 place-items-center">
             {jobs &&
               jobs.map((job) => (
-                <JobCard key={job.job_title} job={job}></JobCard>
+                <JobCard key={job.job_salary} job={job}></JobCard>
               ))}
           </div>
         </TabPanel>
@@ -64,7 +80,7 @@ const JobCategoryTab = () => {
           <div className="grid md:grid-cols-2 gap-5 lg:grid-cols-4 place-items-center">
             {jobs &&
               jobs.map((job) => (
-                <JobCard key={job.job_title} job={job}></JobCard>
+                <JobCard key={job.job_salary} job={job}></JobCard>
               ))}
           </div>
         </TabPanel>
