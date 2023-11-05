@@ -1,29 +1,37 @@
 import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const MainLayout = ({ children }) => {
+  const { user, logOut } = useAuth();
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {
+        toast.success("log Out Successfull.");
+      })
+      .catch(() => {
+        toast.error("Logout Failed.");
+      });
+  };
   //getting the user info for rendering conditionally user image.
-  const { user } = useAuth();
   const links = (
     <>
       <li>
-        <NavLink>Home</NavLink>
+        <NavLink to="/">Home</NavLink>
       </li>
       <li>
-        <NavLink>All Jobs</NavLink>
+        <NavLink to="/all-jobs">All Jobs</NavLink>
+      </li>
+
+      <li>
+        <NavLink to="/add-jobs">Add a Jobs</NavLink>
       </li>
       <li>
-        <NavLink>Applied Jobs</NavLink>
+        <NavLink to="/my-jobs">My Jobs</NavLink>
       </li>
       <li>
-        <NavLink>Add a Jobs</NavLink>
-      </li>
-      <li>
-        <NavLink>My Jobs</NavLink>
-      </li>
-      <li>
-        <NavLink>Blogs</NavLink>
+        <NavLink to="/blogs">Blogs</NavLink>
       </li>
     </>
   );
@@ -67,39 +75,62 @@ const MainLayout = ({ children }) => {
               <ul className="menu menu-horizontal space-x-3">{links}</ul>
             </div>
             {user && (
-              <div className=" dropdown dropdown-end z-20">
-                <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                  <div className="w-10 rounded-full">
-                    <img src={user?.photoURL} />
-                  </div>
-                </label>
-                <ul
-                  tabIndex={0}
-                  className="mt-3 p-2 z-20 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
-                >
-                  <li>
-                    <p>{user.displayName}</p>
-                  </li>
-                  <li>
-                    <a>Settings</a>
-                  </li>
-                  <li>
-                    <a>Logout</a>
-                  </li>
-                </ul>
+              <div className="flex items-center gap-4">
+                {!user && (
+                  <NavLink
+                    to="/login"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-black font-bold rounded-md border-2 border-[#7091F5] px-4 py-2"
+                        : "bg-[#7091F5] font-medium text-white px-4 py-2 "
+                    }
+                  >
+                    Login
+                  </NavLink>
+                )}
+
+                <div className="dropdown dropdown-end">
+                  <label
+                    tabIndex={0}
+                    className="btn btn-ghost btn-circle avatar"
+                  >
+                    <div className="w-10 rounded-full">
+                      <img src={user.photoURL} />
+                    </div>
+                  </label>
+                  <ul
+                    tabIndex={0}
+                    className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+                  >
+                    <li>
+                      <p>{user.displayName}</p>
+                    </li>
+                    <li>
+                      <Link>Applied Jobs</Link>
+                    </li>
+                    <li>
+                      <button
+                        onClick={handleLogOut}
+                        className="bg-[#7091F5] text-[#FFFD8C]"
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
               </div>
             )}
           </div>
         </div>
         {children}
       </div>
-      <div className="drawer-side">
+      <div className="drawer-side ">
         <label
           htmlFor="my-drawer-3"
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <div className="min-h-screen py-3 w-2/3 bg-base-100">
+        <div className="min-h-screen py-3 w-2/3 z-50 bg-white">
           <img
             src="/src/assets/web-logo.png"
             alt="logo"
