@@ -9,7 +9,9 @@ import AddJob from "../Pages/AddJob/AddJob";
 import MyJobs from "../Pages/MyJobs/MyJobs";
 import PrivateRoutes from "./PrivateRoutes";
 import JobDetails from "../Pages/AllJobs/JobDetails";
+import useAxios from "../hooks/useAxios";
 
+const axios = useAxios();
 const router = createBrowserRouter([
   {
     path: "/",
@@ -39,6 +41,7 @@ const router = createBrowserRouter([
             <JobDetails></JobDetails>,
           </PrivateRoutes>
         ),
+        loader: ({ params }) => axios.get(`/jobs/${params.id}`),
       },
       {
         path: "add-job",
