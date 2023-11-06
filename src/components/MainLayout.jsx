@@ -4,6 +4,7 @@ import useAuth from "../hooks/useAuth";
 import toast from "react-hot-toast";
 
 const MainLayout = ({ children }) => {
+  //getting the user info for rendering conditionally user image.
   const { user, logOut } = useAuth();
   const handleLogOut = () => {
     logOut()
@@ -14,7 +15,6 @@ const MainLayout = ({ children }) => {
         toast.error("Logout Failed.");
       });
   };
-  //getting the user info for rendering conditionally user image.
   const links = (
     <>
       <li>

@@ -8,7 +8,9 @@ export default {
     extend: {
       fontFamily: {
         'kanit': "'Kanit', sans-serif",
-        "prompt": "'Prompt', sans-serif"
+        "prompt": "'Prompt', sans-serif",
+        "lilita": " 'Lilita One', sans-serif"
+
 
       }
     },

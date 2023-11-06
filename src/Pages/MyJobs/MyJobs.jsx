@@ -4,14 +4,12 @@ import useMyJobs from "../../hooks/useMyJobs";
 
 const MyJobs = () => {
   const { jobs } = useMyJobs();
-
-  console.log(jobs);
   return (
     <div className="">
       <Helmet>
         <title>My Jobs | Job Hunting</title>
       </Helmet>
-      <div className="overflow-x-auto max-w-7xl mx-auto">
+      <div className="overflow-x-auto max-w-7xl mx-auto md:h-screen">
         <table className="table">
           <thead>
             <tr>
