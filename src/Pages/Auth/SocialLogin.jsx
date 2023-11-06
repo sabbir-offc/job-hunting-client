@@ -1,8 +1,19 @@
+import toast from "react-hot-toast";
+import useAuth from "../../hooks/useAuth";
+
 const SocialLogin = () => {
+  const { socialLogin } = useAuth();
+
+  const handleGoogleSign = async () => {
+    await socialLogin().then(() => {
+      toast.success("Login Successfull.");
+    });
+  };
+
   return (
     <div className="mt-3 space-y-3">
       <button
-        type="button"
+        onClick={handleGoogleSign}
         className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400 bg-white px-3.5 py-2.5 font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
       >
         <span className="mr-2 inline-block">

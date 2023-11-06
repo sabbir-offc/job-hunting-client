@@ -25,7 +25,7 @@ const MainLayout = ({ children }) => {
       </li>
 
       <li>
-        <NavLink to="/add-jobs">Add a Jobs</NavLink>
+        <NavLink to="/add-job">Add a Job</NavLink>
       </li>
       <li>
         <NavLink to="/my-jobs">My Jobs</NavLink>

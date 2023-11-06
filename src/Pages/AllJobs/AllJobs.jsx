@@ -3,9 +3,10 @@ import useTanstack from "../../hooks/useTanstack";
 import JobTable from "./JobTable";
 import { Search } from "lucide-react";
 import { Helmet } from "react-helmet";
+import ContentSpinner from "../../components/ContentSplinner";
 
 const AllJobs = () => {
-  const { jobs, isLoading, refetch } = useTanstack();
+  const { jobs, isLoading } = useTanstack();
   const [text, setText] = useState("");
   const [filteredJobs, setFilteredJobs] = useState(jobs);
 
@@ -16,7 +17,11 @@ const AllJobs = () => {
   }, [jobs]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="max-w-7xl mx-auto flex items-center justify-center">
+        <ContentSpinner></ContentSpinner>
+      </div>
+    );
   }
   const handleSearch = (e) => {
     e.preventDefault();
@@ -24,7 +29,6 @@ const AllJobs = () => {
       job.job_title.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredJobs(filterings);
-    refetch();
   };
 
   return (

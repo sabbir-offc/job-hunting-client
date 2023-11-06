@@ -3,6 +3,7 @@ import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import JobCard from "./JobCard";
 import useAxios from "../hooks/useAxios";
+import JobCategoryLoader from "./JobCategoryLoader";
 const JobCategoryTab = () => {
   const axios = useAxios();
   const [jobs, setJobs] = useState(null);
@@ -22,8 +23,12 @@ const JobCategoryTab = () => {
     }
   }, [selectedCategory, axios]);
 
+  const result =
+    jobs &&
+    jobs.map((job) => <JobCard key={job.job_salary} job={job}></JobCard>);
+
   if (loading) {
-    return <p>Loading</p>;
+    return <JobCategoryLoader></JobCategoryLoader>;
   }
 
   return (
@@ -42,46 +47,27 @@ const JobCategoryTab = () => {
         </TabList>
         <TabPanel>
           <div className="grid md:grid-cols-2 gap-5 lg:grid-cols-4 place-items-center">
-            {jobs &&
-              jobs.map((job) => (
-                <JobCard
-                  key={job.job_salary}
-                  loading={loading}
-                  job={job}
-                ></JobCard>
-              ))}
+            {result}
           </div>
         </TabPanel>
         <TabPanel>
           <div className="grid md:grid-cols-2 gap-5 lg:grid-cols-4 place-items-center">
-            {jobs &&
-              jobs.map((job) => (
-                <JobCard key={job.job_salary} job={job}></JobCard>
-              ))}
+            {result}
           </div>
         </TabPanel>
         <TabPanel>
           <div className="grid md:grid-cols-2 gap-5 lg:grid-cols-4 place-items-center">
-            {jobs &&
-              jobs.map((job) => (
-                <JobCard key={job.job_salary} job={job}></JobCard>
-              ))}
+            {result}
           </div>
         </TabPanel>
         <TabPanel>
           <div className="grid md:grid-cols-2 gap-5 lg:grid-cols-4 place-items-center">
-            {jobs &&
-              jobs.map((job) => (
-                <JobCard key={job.job_salary} job={job}></JobCard>
-              ))}
+            {result}
           </div>
         </TabPanel>
         <TabPanel>
           <div className="grid md:grid-cols-2 gap-5 lg:grid-cols-4 place-items-center">
-            {jobs &&
-              jobs.map((job) => (
-                <JobCard key={job.job_salary} job={job}></JobCard>
-              ))}
+            {result}
           </div>
         </TabPanel>
       </Tabs>
