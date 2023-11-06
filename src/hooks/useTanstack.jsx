@@ -19,8 +19,6 @@ const useTanstack = () => {
       }
     },
   });
-
-  console.log(jobs);
   return { isLoading, jobs, refetch };
 };
 
