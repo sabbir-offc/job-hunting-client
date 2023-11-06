@@ -15,6 +15,7 @@ const AddJob = () => {
   const handleAddJob = (e) => {
     e.preventDefault();
     const form = e.target;
+    const user_email = user?.email;
     const job_image = form.image.value;
     const job_title = form.job_title.value;
     const job_description = form.description.value;
@@ -32,6 +33,7 @@ const AddJob = () => {
       job_title,
       job_description,
       user_name,
+      user_email,
       job_category,
       job_salary,
       job_posting_data,

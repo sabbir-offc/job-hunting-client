@@ -36,11 +36,11 @@ const MainLayout = ({ children }) => {
     </>
   );
   return (
-    <div className="drawer bg-base-300">
+    <div className="drawer bg-base-300 relative">
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col font-kanit">
         {/* Navbar */}
-        <div className="w-full navbar max-w-7xl mx-auto">
+        <div className="w-full navbar max-w-7xl mx-auto sticky top-0 backdrop-blur-xl rounded-b-xl z-[1] lg:z-50">
           <div className="flex-none lg:hidden">
             <label
               htmlFor="my-drawer-3"
@@ -123,7 +123,7 @@ const MainLayout = ({ children }) => {
         </div>
         {children}
       </div>
-      <div className="drawer-side ">
+      <div className="drawer-side z-10">
         <label
           htmlFor="my-drawer-3"
           aria-label="close sidebar"

@@ -20,7 +20,8 @@ const Login = () => {
       .then(() => {
         toast.success("Login Successfull.", { id: toastId });
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         toast.error("Login Failed.", { id: toastId });
       });
   };
