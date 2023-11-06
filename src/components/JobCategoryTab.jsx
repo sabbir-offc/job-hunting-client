@@ -24,8 +24,7 @@ const JobCategoryTab = () => {
   }, [selectedCategory, axios]);
 
   const result =
-    jobs &&
-    jobs.map((job) => <JobCard key={job.job_salary} job={job}></JobCard>);
+    jobs && jobs.map((job) => <JobCard key={job._id} job={job}></JobCard>);
 
   if (loading) {
     return <JobCategoryLoader></JobCategoryLoader>;
