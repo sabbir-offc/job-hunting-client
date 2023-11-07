@@ -52,6 +52,7 @@ const UpdateJob = () => {
     axios.put(`/jobs/${_id}`, jobData).then((res) => {
       if (res.data.modifiedCount > 0) {
         toast.success("Job Updated Successfully.", { id: toastId });
+        form.reset();
       }
     });
   };
@@ -189,7 +190,7 @@ const UpdateJob = () => {
           type="submit"
           className="text-white ease-in-out duration-300 font-prompt bg-[#793FDF] hover:bg-[#7091F5]  font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center "
         >
-          Add Job
+          Update
         </button>
       </form>
     </div>

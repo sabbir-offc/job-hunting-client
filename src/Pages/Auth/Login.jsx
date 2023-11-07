@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import Animation from "/src/assets/loginAnimation.json";
+import Animation from "/public/Animation/loginAnimation.json";
 import Lottie from "lottie-react";
 import { Helmet } from "react-helmet";
 import SocialLogin from "./SocialLogin";

@@ -11,6 +11,7 @@ import PrivateRoutes from "./PrivateRoutes";
 import JobDetails from "../Pages/AllJobs/JobDetails";
 import useAxios from "../hooks/useAxios";
 import UpdateJob from "../Pages/MyJobs/UpdateJob";
+import AppliedJobs from "../Pages/AppliedJobs/AppliedJobs";
 
 const axios = useAxios();
 const router = createBrowserRouter([
@@ -55,13 +56,25 @@ const router = createBrowserRouter([
       },
       {
         path: "add-job",
-        element: <AddJob></AddJob>,
+        element: (
+          <PrivateRoutes>
+            <AddJob></AddJob>,
+          </PrivateRoutes>
+        ),
       },
       {
         path: "my-jobs",
         element: (
           <PrivateRoutes>
             <MyJobs></MyJobs>,
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "applied-jobs",
+        element: (
+          <PrivateRoutes>
+            <AppliedJobs></AppliedJobs>
           </PrivateRoutes>
         ),
       },

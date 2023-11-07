@@ -3,7 +3,7 @@ const Hero = () => {
     <div className="relative w-full">
       <div className="mx-auto max-w-7xl place-items-center lg:grid lg:grid-cols-12 lg:gap-x-8 lg:px-8">
         <div className="flex flex-col justify-center px-4 py-12 md:py-16 lg:col-span-7 lg:gap-x-6 lg:px-6 lg:py-24 xl:col-span-6">
-          <img src="/src/assets/web-logo.png" alt="logo" className="w-1/12" />
+          <img src="/web-logo.png" alt="logo" className="w-1/12" />
           <div className="mt-8 flex max-w-max items-center space-x-2 rounded-full bg-gray-100 p-1">
             <div className="rounded-full bg-white p-1 px-2">
               <p className="text-sm font-medium">We&apos; hiring</p>
@@ -49,7 +49,7 @@ const Hero = () => {
         >
           <img
             className=" bg-gray-50 object-cover  rounded-lg"
-            src="/src/assets/hero.jpg"
+            src="/hero.jpg"
           />
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import SocialLogin from "./SocialLogin";
 import Lottie from "lottie-react";
-import Animation from "/src/assets/registerAnimation";
+import Animation from "/public/Animation/registerAnimation.json";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";

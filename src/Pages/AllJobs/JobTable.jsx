@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
 import useAxios from "../../hooks/useAxios";
 import useMyJobs from "../../hooks/useMyJobs";
-import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const JobTable = ({ job }) => {
   const location = useLocation();
@@ -19,10 +19,26 @@ const JobTable = ({ job }) => {
   } = job;
 
   const handleDelete = (id) => {
-    axios.delete(`/jobs/delete/${id}`).then((res) => {
-      if (res.data.deletedCount > 0) {
-        toast.success("Job Deleted Successfull.");
-        return refetch();
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`/jobs/delete/${id}`).then((res) => {
+          if (res.data.deletedCount > 0) {
+            return refetch();
+          }
+        });
+        return Swal.fire({
+          title: "Deleted!",
+          text: "Job Deleted Successfull.",
+          icon: "success",
+        });
       }
     });
   };

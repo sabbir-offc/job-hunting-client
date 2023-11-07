@@ -64,11 +64,7 @@ const MainLayout = ({ children }) => {
           </div>
           <div className="flex w-full justify-around backdrop-blur-lg">
             <div className="flex items-center">
-              <img
-                src="/src/assets/web-logo.png"
-                alt="logo"
-                className="w-14 "
-              />
+              <img src="/web-logo.png" alt="logo" className="w-14 " />
               <div className="px-2 mx-2 font-kanit">Hunting</div>
             </div>
             <div className="hidden lg:block">
@@ -105,7 +101,7 @@ const MainLayout = ({ children }) => {
                       <p>{user.displayName}</p>
                     </li>
                     <li>
-                      <Link>Applied Jobs</Link>
+                      <Link to="/applied-jobs">Applied Jobs</Link>
                     </li>
                     <li>
                       <button
