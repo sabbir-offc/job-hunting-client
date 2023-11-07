@@ -65,7 +65,7 @@ const AppliedJobs = () => {
             </div>
             <div>
               <p className="text-sm text-center font-medium text-[#793FDF]">
-                {`You don't post any job.`}
+                {`You haven't applied to any jobs.`}
               </p>
             </div>
           </div>

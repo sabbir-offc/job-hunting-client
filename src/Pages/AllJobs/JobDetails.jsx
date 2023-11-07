@@ -1,7 +1,6 @@
 import { useLoaderData } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import emailjs from "@emailjs/browser";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
@@ -13,6 +12,7 @@ const JobDetails = () => {
   const [deadline, setDeadline] = useState(null);
   const { user } = useAuth();
   const {
+    _id,
     job_image,
     job_title,
     user_name,
@@ -79,6 +79,10 @@ const JobDetails = () => {
             );
           }
         });
+        await axios
+          .post(`/job-application-number/${_id}`)
+          .then((res) => console.log(res.data))
+          .catch((err) => console.log(err));
       } else {
         Swal.fire("Canceled", "Your application was not submitted.", "error");
       }

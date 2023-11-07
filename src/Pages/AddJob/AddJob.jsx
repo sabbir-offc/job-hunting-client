@@ -23,8 +23,8 @@ const AddJob = () => {
     const job_salary = form.job_salary.value;
     const job_posting_data = postingDate;
     const job_application_deadline = deadlineDate;
-    const job_application_number = form.job_application_number.value;
-
+    const job_application_number = parseInt(form.job_application_number.value);
+    console.log(job_application_number);
     const toastId = toast.loading("Job adding...");
 
     const jobData = {

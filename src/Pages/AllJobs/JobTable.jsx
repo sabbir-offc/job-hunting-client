@@ -3,11 +3,14 @@ import { Link, useLocation } from "react-router-dom";
 import useAxios from "../../hooks/useAxios";
 import useMyJobs from "../../hooks/useMyJobs";
 import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
 
 const JobTable = ({ job }) => {
   const location = useLocation();
   const axios = useAxios();
   const { refetch } = useMyJobs();
+  const [deadline, setDeadline] = useState(null);
+
   const {
     _id,
     job_image,
@@ -17,7 +20,14 @@ const JobTable = ({ job }) => {
     job_salary,
     job_application_deadline,
   } = job;
-
+  useEffect(() => {
+    const deadlineDate = new Date(job_application_deadline);
+    const year = deadlineDate.getFullYear();
+    const month = (deadlineDate.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
+    const day = deadlineDate.getDate().toString().padStart(2, "0");
+    const formattedDate = `${day}-${month}-${year}`;
+    setDeadline(formattedDate);
+  }, [job_application_deadline]);
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -44,7 +54,7 @@ const JobTable = ({ job }) => {
   };
 
   return (
-    <tr>
+    <tr className=" w-full">
       <td>
         <div className="flex items-center space-x-3">
           <div className="avatar">
@@ -64,7 +74,7 @@ const JobTable = ({ job }) => {
       </td>
       {location.pathname === "/all-jobs" && (
         <td>
-          {job_application_deadline} <br />
+          {deadline} <br />
           <span className="badge badge-ghost badge-sm">{job_category}</span>
         </td>
       )}
