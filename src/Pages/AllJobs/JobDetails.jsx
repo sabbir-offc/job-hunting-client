@@ -1,6 +1,7 @@
 import { useLoaderData } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
+import emailjs from "@emailjs/browser";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
@@ -8,6 +9,7 @@ const JobDetails = () => {
   const data = useLoaderData();
   const job = data.data;
   const axios = useAxios();
+
   const [deadline, setDeadline] = useState(null);
   const { user } = useAuth();
   const {
@@ -30,6 +32,7 @@ const JobDetails = () => {
     const day = deadlineDate.getDate().toString().padStart(2, "0");
     const formattedDate = `${day}-${month}-${year}`;
     setDeadline(formattedDate);
+    emailjs.init("rps7HsvPhdSnjADeo");
   }, [job_application_deadline]);
 
   const handleApply = async () => {
@@ -40,7 +43,7 @@ const JobDetails = () => {
       <div>
         <input id="user-email" class="swal2-input" placeholder="Email" value="${email}" readonly>
         <input id="user-name" class="swal2-input" placeholder="Name" value="${name}" readonly>
-        <input id="resume-link" type="url" required class="swal2-input" placeholder="Resume Link" value="">
+        <input id="resume_link" type="url" required class="swal2-input" placeholder="Resume Link" value="">
       </div>`;
 
     if (today > deadlineDate) {
@@ -58,7 +61,7 @@ const JobDetails = () => {
       });
       const user_email = document.getElementById("user-email").value;
       const user_name = document.getElementById("user-name").value;
-      const resumeLink = document.getElementById("resume-link").value;
+      const resumeLink = document.getElementById("resume_link").value;
       const applicantInfo = {
         job_title,
         job_image,
@@ -68,6 +71,26 @@ const JobDetails = () => {
         resumeLink,
       };
       if (value && resumeLink) {
+        const emailInfo = {
+          user_name,
+          user_email,
+          resumeLink,
+        };
+        emailjs
+          .sendForm(
+            "service_aod4p0x",
+            "template_4kwyx6h",
+            emailInfo,
+            "rps7HsvPhdSnjADeo"
+          )
+          .then(
+            (result) => {
+              console.log(result);
+            },
+            (error) => {
+              console.log(error.text);
+            }
+          );
         await axios.post("/make-application", applicantInfo).then((res) => {
           if (res.data.acknowledged) {
             Swal.fire(

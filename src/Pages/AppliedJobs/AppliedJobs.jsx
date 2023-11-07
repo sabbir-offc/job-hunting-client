@@ -6,7 +6,7 @@ const AppliedJobs = () => {
   const { applications } = useAppliedJobs();
   console.log(applications);
   return (
-    <div>
+    <div className="md:h-screen">
       {applications?.length > 0 ? (
         <div className="overflow-x-auto mx-auto w-fit">
           <table className="table">
@@ -24,7 +24,7 @@ const AppliedJobs = () => {
           </table>
         </div>
       ) : (
-        <div className="rounded-md border-l-4 w-full border-[#793FDF] bg-[#7091f577] p-4">
+        <div className="rounded-md border-l-4 max-w-5xl mx-auto my-10 border-[#793FDF] bg-[#7091f577] p-4">
           <div className="flex items-center justify-center space-x-4">
             <div>
               <AlertCircle className="h-6 w-6 text-[#793FDF]" />
