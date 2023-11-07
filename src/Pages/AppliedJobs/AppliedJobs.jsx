@@ -1,14 +1,48 @@
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Download } from "lucide-react";
 import useAppliedJobs from "../../hooks/useAppliedJobs";
 import JobTable from "../AllJobs/JobTable";
+import generatePDF, { Resolution, Margin } from "react-to-pdf";
+import { Helmet } from "react-helmet";
 
 const AppliedJobs = () => {
   const { applications } = useAppliedJobs();
   console.log(applications);
+
+  const options = {
+    method: "open",
+    resolution: Resolution.HIGH,
+    page: {
+      margin: Margin.SMALL,
+      format: "letter",
+      orientation: "landscape",
+    },
+    canvas: {
+      mimeType: "image/png",
+      qualityRatio: 1,
+    },
+    overrides: {
+      pdf: {
+        compress: true,
+      },
+      canvas: {
+        useCORS: true,
+      },
+    },
+    fileName: "applied_jobs.pdf",
+  };
+  const getTargetElement = () =>
+    document.getElementById("applied-job-container");
+
   return (
-    <div className="md:h-screen">
+    <div className="max-w-7xl mx-auto mb-10">
+      <Helmet>
+        <title>Applied Jobs | Job Hunting</title>
+      </Helmet>
       {applications?.length > 0 ? (
-        <div className="overflow-x-auto mx-auto w-fit">
+        <div
+          id="applied-job-container"
+          className="overflow-x-auto text-center mx-auto w-fit"
+        >
           <table className="table">
             <thead>
               <tr>
@@ -37,6 +71,12 @@ const AppliedJobs = () => {
           </div>
         </div>
       )}
+      <button
+        className="bg-[#793FDF] mx-auto mt-5 px-4 py-3 rounded-md text-white flex justify-center items-center gap-3"
+        onClick={() => generatePDF(getTargetElement, options)}
+      >
+        <Download></Download> Download PDF
+      </button>
     </div>
   );
 };

@@ -54,7 +54,11 @@ const JobTable = ({ job }) => {
           </div>
           <div>
             <div className="font-bold">{job_title}</div>
-            <div className="text-sm opacity-80">Posted By: {user_name}</div>
+            {location.pathname === "/applied-jobs" ? (
+              ""
+            ) : (
+              <div className="text-sm opacity-80">Posted By: {user_name}</div>
+            )}
           </div>
         </div>
       </td>
