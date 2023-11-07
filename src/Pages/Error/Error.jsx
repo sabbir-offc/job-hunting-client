@@ -1,3 +1,5 @@
+import Lottie from "lottie-react";
+import Animation from "/public/Animation/404.json";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -5,10 +7,7 @@ const Error = () => {
   return (
     <div className="py-10 w-full h-screen flex items-center justify-center">
       <div className="text-center">
-        <p className="text-base font-semibold text-black">404</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight text-black sm:text-5xl">
-          Page not found
-        </h1>
+        <Lottie animationData={Animation}></Lottie>
         <p className="mt-4 text-base leading-7 text-gray-600">
           {`Sorry, we couldn't find the page you're looking for.`}
         </p>

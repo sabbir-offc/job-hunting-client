@@ -3,12 +3,15 @@ import Animation from "/public/Animation/loginAnimation.json";
 import Lottie from "lottie-react";
 import { Helmet } from "react-helmet";
 import SocialLogin from "./SocialLogin";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
+import useAxios from "../../hooks/useAxios";
 const Login = () => {
   const { loginUser } = useAuth();
-
+  const location = useLocation();
+  const axios = useAxios();
+  const navigate = useNavigate();
   const handleLoginUser = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -17,7 +20,13 @@ const Login = () => {
     const toastId = toast.loading("Logging...");
 
     await loginUser(email, password)
-      .then(() => {
+      .then((res) => {
+        const userEmail = res?.user?.email;
+        axios.post("/auth/access-token", { email: userEmail }).then((res) => {
+          if (res.data.success) {
+            navigate(location.state ? location.state : "/");
+          }
+        });
         toast.success("Login Successfull.", { id: toastId });
       })
       .catch((err) => {

@@ -1,11 +1,21 @@
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import useAxios from "../../hooks/useAxios";
 
 const SocialLogin = () => {
   const { socialLogin } = useAuth();
+  const navigate = useNavigate();
+  const axios = useAxios();
 
   const handleGoogleSign = async () => {
-    await socialLogin().then(() => {
+    await socialLogin().then((res) => {
+      const userEmail = res?.user?.email;
+      axios.post("/auth/access-token", { email: userEmail }).then((res) => {
+        if (res.data.success) {
+          navigate(location.state ? location.state : "/");
+        }
+      });
       toast.success("Login Successfull.");
     });
   };

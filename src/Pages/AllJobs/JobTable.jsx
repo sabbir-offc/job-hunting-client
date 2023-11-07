@@ -64,9 +64,9 @@ const JobTable = ({ job }) => {
           <span className="badge badge-ghost badge-sm">{job_category}</span>
         </td>
       )}
-      {location.pathname === "/all-jobs" && <td>Salary: {job_salary}</td>}
+      {location.pathname === "/my-jobs" ? "" : <td>Salary: {job_salary} ৳</td>}
       <th>
-        {location.pathname === "/my-jobs" ? (
+        {location.pathname === "/my-jobs" && (
           <div className="space-x-2">
             <Link
               to={`/update-job/${_id}`}
@@ -81,7 +81,8 @@ const JobTable = ({ job }) => {
               Delete
             </button>
           </div>
-        ) : (
+        )}
+        {location.pathname === "/all-jobs" && (
           <Link to={`/job/${_id}`} className="btn btn-ghost btn-xs">
             Details
           </Link>

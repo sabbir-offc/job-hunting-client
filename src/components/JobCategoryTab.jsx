@@ -3,8 +3,7 @@ import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import JobCard from "./JobCard";
 import useAxios from "../hooks/useAxios";
-import JobCategoryLoader from "./JobCategoryLoader";
-import { AlertCircle, X } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 
 const categories = [
   { category: "", label: "All Jobs" },
@@ -17,12 +16,10 @@ const categories = [
 const JobCategoryTab = () => {
   const axios = useAxios();
   const [jobs, setJobs] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       if (selectedCategory === "") {
         const res = await axios.get("/jobs");
         setJobs(res.data);
@@ -30,7 +27,6 @@ const JobCategoryTab = () => {
         const res = await axios.get(`/jobs?job_category=${selectedCategory}`);
         setJobs(res.data);
       }
-      setLoading(false);
     };
 
     fetchData();

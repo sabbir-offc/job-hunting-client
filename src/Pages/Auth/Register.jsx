@@ -7,9 +7,11 @@ import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import { updateProfile } from "firebase/auth";
+import useAxios from "../../hooks/useAxios";
 
 const Register = () => {
   const { createUser } = useAuth();
+  const axios = useAxios();
 
   const handleCreateUser = async (e) => {
     e.preventDefault();
@@ -27,10 +29,10 @@ const Register = () => {
       email,
       password,
     };
-    console.log(userInfo);
     try {
       await createUser(email, password).then((res) => {
         const user = res.user;
+
         updateProfile(user, { displayName: name, photoURL: image });
         toast.success("Account Create Successfull.", { id: toastId });
       });
