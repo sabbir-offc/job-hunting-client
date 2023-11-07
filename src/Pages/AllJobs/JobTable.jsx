@@ -1,12 +1,13 @@
 import PropTypes from "prop-types";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import useAxios from "../../hooks/useAxios";
 import useMyJobs from "../../hooks/useMyJobs";
+import toast from "react-hot-toast";
 
 const JobTable = ({ job }) => {
   const location = useLocation();
   const axios = useAxios();
-  const { refetch, jobs } = useMyJobs();
+  const { refetch } = useMyJobs();
   const {
     _id,
     job_image,
@@ -17,11 +18,10 @@ const JobTable = ({ job }) => {
     job_application_deadline,
   } = job;
 
-  console.log(jobs);
   const handleDelete = (id) => {
     axios.delete(`/jobs/delete/${id}`).then((res) => {
       if (res.data.deletedCount > 0) {
-        alert("Deleted product.");
+        toast.success("Job Deleted Successfull.");
         return refetch();
       }
     });
@@ -52,9 +52,12 @@ const JobTable = ({ job }) => {
       <th>
         {location.pathname === "/my-jobs" ? (
           <div className="space-x-2">
-            <button className="rounded-lg bg-[#793FDF] text-white  btn-sm">
+            <Link
+              to={`/update-job/${_id}`}
+              className="rounded-lg py-1 bg-[#793FDF] text-white  btn-sm"
+            >
               Update
-            </button>
+            </Link>
             <button
               onClick={() => handleDelete(_id)}
               className="rounded-lg bg-[#7091F5] text-white  btn-sm"
@@ -63,7 +66,9 @@ const JobTable = ({ job }) => {
             </button>
           </div>
         ) : (
-          <button className="btn btn-ghost btn-xs">Details</button>
+          <Link to={`/job/${_id}`} className="btn btn-ghost btn-xs">
+            Details
+          </Link>
         )}
       </th>
     </tr>

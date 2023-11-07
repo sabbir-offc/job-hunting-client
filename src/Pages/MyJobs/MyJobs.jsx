@@ -9,7 +9,7 @@ const MyJobs = () => {
       <Helmet>
         <title>My Jobs | Job Hunting</title>
       </Helmet>
-      <div className="overflow-x-auto max-w-7xl mx-auto md:h-screen">
+      <div className="overflow-x-auto mx-auto w-fit md:h-screen">
         <table className="table">
           <thead>
             <tr>

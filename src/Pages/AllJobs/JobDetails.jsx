@@ -1,36 +1,36 @@
-import { useLoaderData, useParams } from "react-router-dom";
-import useAxios from "../../hooks/useAxios";
+import { useLoaderData } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import Swal from "sweetalert2";
-import JobDetailsLoader from "../../components/JobDetailsLoader";
 import useAuth from "../../hooks/useAuth";
+import useAxios from "../../hooks/useAxios";
 const JobDetails = () => {
   const data = useLoaderData();
   const job = data.data;
+  const axios = useAxios();
   const [deadline, setDeadline] = useState(null);
   const { user } = useAuth();
   const {
     job_image,
     job_title,
     user_name,
-    job_category,
+    user_email,
     job_salary,
     job_description,
-    job_posting_data,
     job_application_deadline,
     job_application_number,
   } = job;
-  useEffect(() => {
-    const originalDate = new Date(job_application_deadline);
-    const year = originalDate.getFullYear();
-    const month = (originalDate.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based, so add 1 and pad with '0'
-    const day = originalDate.getDate().toString().padStart(2, "0");
-    const finalDate = `${day}-${month}-${year}`;
-    setDeadline(finalDate);
-  }, [job_application_deadline]);
+  const today = new Date();
+  const deadlineDate = new Date(job_application_deadline);
 
-  console.log(deadline);
+  useEffect(() => {
+    const deadlineDate = new Date(job_application_deadline);
+    const year = deadlineDate.getFullYear();
+    const month = (deadlineDate.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
+    const day = deadlineDate.getDate().toString().padStart(2, "0");
+    const formattedDate = `${day}-${month}-${year}`;
+    setDeadline(formattedDate);
+  }, [job_application_deadline]);
 
   const handleApply = async () => {
     const email = user?.email;
@@ -43,17 +43,43 @@ const JobDetails = () => {
         <input id="resume-link" type="url" required class="swal2-input" placeholder="Resume Link" value="">
       </div>`;
 
-    const { value } = await Swal.fire({
-      title: "Apply for the Job",
-      html: htmlTemplate,
-      showCancelButton: true,
-      confirmButtonText: "Submit",
-    });
-    const resumeLink = document.getElementById("resume-link").value;
-    if (value && resumeLink) {
-      Swal.fire("Success", "Your application has been submitted.", "success");
+    if (today > deadlineDate) {
+      return Swal.fire({
+        title: "Opps, Sorry!",
+        text: "The Deadline for this job is over. Please try to another job",
+        icon: "error",
+      });
     } else {
-      Swal.fire("Canceled", "Your application was not submitted.", "error");
+      const { value } = await Swal.fire({
+        title: "Apply for the Job",
+        html: htmlTemplate,
+        showCancelButton: true,
+        confirmButtonText: "Submit",
+      });
+      const user_email = document.getElementById("user-email").value;
+      const user_name = document.getElementById("user-name").value;
+      const resumeLink = document.getElementById("resume-link").value;
+      const applicantInfo = {
+        job_title,
+        job_image,
+        job_salary,
+        user_name,
+        user_email,
+        resumeLink,
+      };
+      if (value && resumeLink) {
+        await axios.post("/make-application", applicantInfo).then((res) => {
+          if (res.data.acknowledged) {
+            Swal.fire(
+              "Success",
+              "Your application has been submitted.",
+              "success"
+            );
+          }
+        });
+      } else {
+        Swal.fire("Canceled", "Your application was not submitted.", "error");
+      }
     }
   };
 
@@ -93,7 +119,8 @@ const JobDetails = () => {
           </p>
           <button
             onClick={handleApply}
-            className="bg-[#7091F5] ease-in-out duration-500 hover:bg-[#793FDF] w-full py-3 text-white rounded"
+            disabled={user?.email === user_email ? true : false}
+            className="bg-[#7091F5] disabled:bg-gray-400  ease-in-out duration-500 hover:bg-[#793FDF] w-full py-3 text-white rounded"
           >
             Apply Job
           </button>
