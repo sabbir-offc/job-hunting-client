@@ -51,7 +51,7 @@ const AppliedJobs = () => {
         <title>Applied Jobs | Job Hunting</title>
       </Helmet>
 
-      <div className=" mt-10 w-fit mx-auto flex flex-col items-end">
+      <div className=" mt-10 mx-auto flex flex-col items-end">
         <select
           name="job_category"
           onChange={(e) => setSelectedCategory(e.target.value)}
