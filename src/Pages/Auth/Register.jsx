@@ -16,7 +16,6 @@ const Register = () => {
 
   const handleCreateUser = async (e) => {
     e.preventDefault();
-    const toastId = toast.loading("Account Creating...");
 
     const form = e.target;
 
@@ -24,6 +23,18 @@ const Register = () => {
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
+    if (password.length < 6) {
+      return toast.error("Password must be at least 6 characters long.");
+    } else if (!/[A-Z]/.test(password)) {
+      return toast.error(
+        "Password must contain at least one capital letter (A-Z)."
+      );
+    } else if (!/[!@#$%^&*()_+]/.test(password)) {
+      return toast.error(
+        "Password must contain at least one special character."
+      );
+    }
+    const toastId = toast.loading("Account Creating...");
 
     try {
       await createUser(email, password).then((res) => {
