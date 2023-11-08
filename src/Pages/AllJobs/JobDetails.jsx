@@ -20,6 +20,7 @@ const JobDetails = () => {
     user_email,
     minimum_salary,
     maximum_salary,
+    job_category,
     job_description,
     job_application_deadline,
     job_application_number,
@@ -35,13 +36,20 @@ const JobDetails = () => {
     const formattedDate = `${day}-${month}-${year}`;
     setDeadline(formattedDate);
     emailjs.init("rps7HsvPhdSnjADeo");
+    window.scroll(0, 0);
   }, [job_application_deadline]);
 
   const handleApply = async () => {
     const email = user?.email;
     const name = user?.displayName;
     let resumeLink = "";
-
+    if (today > deadlineDate) {
+      return Swal.fire({
+        title: "Opps, Sorry!",
+        text: "The Deadline for this job is over. Please try another job",
+        icon: "error",
+      });
+    }
     const { value: formValues } = await Swal.fire({
       title: "Apply for the Job",
       html: `<form>
@@ -65,19 +73,14 @@ const JobDetails = () => {
       },
     });
 
-    if (today > deadlineDate) {
-      return Swal.fire({
-        title: "Opps, Sorry!",
-        text: "The Deadline for this job is over. Please try another job",
-        icon: "error",
-      });
-    } else if (formValues && formValues.resumeLink) {
-      const user_email = user?.email; // Use the user's email address
+    if (formValues && formValues.resumeLink) {
+      const user_email = user?.email;
       const user_name = name;
       resumeLink = formValues.resumeLink;
       const applicantInfo = {
         job_title,
         job_image,
+        job_category,
         minimum_salary,
         maximum_salary,
         user_name,

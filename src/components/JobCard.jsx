@@ -1,9 +1,14 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+const hiddenMask = `repeating-linear-gradient(to right, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 30px, rgba(0,0,0,1) 30px, rgba(0,0,0,1) 30px)`;
+const visibleMask = `repeating-linear-gradient(to right, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 0px, rgba(0,0,0,1) 0px, rgba(0,0,0,1) 30px)`;
 
 const JobCard = ({ job }) => {
   const [deadline, setDeadline] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isInView, setIsInView] = useState(false);
 
   const {
     _id,
@@ -25,13 +30,32 @@ const JobCard = ({ job }) => {
     const formattedDate = `${day}-${month}-${year}`;
     setDeadline(formattedDate);
   }, [job_application_deadline]);
+
   return (
-    <div className="w-[300px] rounded-md border">
-      <img
-        src={job_image}
-        alt={`image of ${job_title}`}
-        className="h-[200px] w-full rounded-t-md object-cover"
-      />
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, amount: 0.2 }}
+      className="w-[300px] rounded-md border"
+    >
+      <motion.div
+        initial={false}
+        animate={
+          isLoaded && isInView
+            ? { WebkitMaskImage: visibleMask, maskImage: visibleMask }
+            : { WebkitMaskImage: hiddenMask, maskImage: hiddenMask }
+        }
+        transition={{ duration: 1, delay: 0.2 }}
+        viewport={{ once: true }}
+        onViewportEnter={() => setIsInView(true)}
+      >
+        <img
+          src={job_image}
+          className="h-[200px] w-full rounded-t-md object-cover"
+          alt={`image of ${job_title}`}
+          onLoad={() => setIsLoaded(true)}
+        />
+      </motion.div>
       <div className="p-4">
         <div className="">
           <h1 className="inline-flex items-center text-lg font-semibold">
@@ -68,7 +92,7 @@ const JobCard = ({ job }) => {
           </Link>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 JobCard.propTypes = {

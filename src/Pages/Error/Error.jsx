@@ -2,10 +2,14 @@ import Lottie from "lottie-react";
 import Animation from "/public/Animation/404.json";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const Error = () => {
   return (
     <div className="py-10 w-full h-screen flex items-center justify-center">
+      <Helmet>
+        <title>Error | Job Hunting</title>
+      </Helmet>
       <div className="text-center">
         <Lottie animationData={Animation}></Lottie>
         <p className="mt-4 text-base leading-7 text-gray-600">

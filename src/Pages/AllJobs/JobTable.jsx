@@ -20,6 +20,7 @@ const JobTable = ({ job }) => {
     minimum_salary,
     maximum_salary,
     job_application_deadline,
+    job_application_number,
   } = job;
   useEffect(() => {
     const deadlineDate = new Date(job_application_deadline);
@@ -92,6 +93,11 @@ const JobTable = ({ job }) => {
           <p>{job_category}</p>
         </td>
       )}
+      {location.pathname === "/all-jobs" && (
+        <td className="text-center">
+          <p>{job_application_number}</p>
+        </td>
+      )}
       <th>
         {location.pathname === "/my-jobs" && (
           <div className="items-center justify-center flex gap-3">
@@ -110,7 +116,10 @@ const JobTable = ({ job }) => {
           </div>
         )}
         {location.pathname === "/all-jobs" && (
-          <Link to={`/job/${_id}`} className="btn btn-ghost btn-xs">
+          <Link
+            to={`/job/${_id}`}
+            className="btn btn-ghost btn-xs bg-[#793FDF] text-white"
+          >
             Details
           </Link>
         )}

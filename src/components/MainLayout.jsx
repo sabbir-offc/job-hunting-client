@@ -25,7 +25,7 @@ const MainLayout = ({ children }) => {
       </li>
 
       {user && (
-        <div className="flex items-center gap-3">
+        <div className="flex lg:items-center gap-3 flex-col lg:flex-row">
           <li>
             <NavLink to="/add-job">Add a Job</NavLink>
           </li>
