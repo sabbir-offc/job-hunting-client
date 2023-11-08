@@ -1,4 +1,5 @@
 import { useLoaderData } from "react-router-dom";
+import emailjs from "emailjs-com";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import Swal from "sweetalert2";
@@ -32,35 +33,47 @@ const JobDetails = () => {
     const day = deadlineDate.getDate().toString().padStart(2, "0");
     const formattedDate = `${day}-${month}-${year}`;
     setDeadline(formattedDate);
+    emailjs.init("rps7HsvPhdSnjADeo");
   }, [job_application_deadline]);
 
   const handleApply = async () => {
     const email = user?.email;
     const name = user?.displayName;
+    let resumeLink = "";
 
-    const htmlTemplate = `
-      <div>
-        <input id="user-email" class="swal2-input" placeholder="Email" value="${email}" readonly>
-        <input id="user-name" class="swal2-input" placeholder="Name" value="${name}" readonly>
-        <input id="resume_link" type="url" name="resumeLink" required class="swal2-input" placeholder="Resume Link" value="">
-      </div>`;
+    const { value: formValues } = await Swal.fire({
+      title: "Apply for the Job",
+      html: `<form>
+          <input id="user-email" class="swal2-input" placeholder="Email" value="${email}" readonly>
+          <input id="user-name" class="swal2-input" placeholder="Name" value="${name}" readonly>
+          <input id="resume_link" class="swal2-input" type="url" placeholder="Resume Link" required>
+        </form>`,
+      showCancelButton: true,
+      confirmButtonText: "Submit",
+      didOpen: () => {
+        const resumeLinkInput = Swal.getPopup().querySelector("#resume_link");
+        resumeLinkInput.addEventListener("input", (e) => {
+          resumeLink = e.target.value;
+        });
+      },
+      preConfirm: () => {
+        if (!resumeLink) {
+          Swal.showValidationMessage("Please enter your resume link");
+        }
+        return { resumeLink: resumeLink };
+      },
+    });
 
     if (today > deadlineDate) {
       return Swal.fire({
         title: "Opps, Sorry!",
-        text: "The Deadline for this job is over. Please try to another job",
+        text: "The Deadline for this job is over. Please try another job",
         icon: "error",
       });
-    } else {
-      const { value } = await Swal.fire({
-        title: "Apply for the Job",
-        html: htmlTemplate,
-        showCancelButton: true,
-        confirmButtonText: "Submit",
-      });
-      const user_email = document.getElementById("user-email").value;
-      const user_name = document.getElementById("user-name").value;
-      const resumeLink = document.getElementById("resume_link").value;
+    } else if (formValues && formValues.resumeLink) {
+      const user_email = user?.email; // Use the user's email address
+      const user_name = name;
+      resumeLink = formValues.resumeLink;
       const applicantInfo = {
         job_title,
         job_image,
@@ -69,23 +82,39 @@ const JobDetails = () => {
         user_email,
         resumeLink,
       };
-      if (value && resumeLink) {
-        await axios.post("/make-application", applicantInfo).then((res) => {
-          if (res.data.acknowledged) {
-            Swal.fire(
-              "Success",
-              "Your application has been submitted.",
-              "success"
-            );
-          }
-        });
-        await axios
-          .post(`/job-application-number/${_id}`)
-          .then((res) => console.log(res.data))
-          .catch((err) => console.log(err));
-      } else {
-        Swal.fire("Canceled", "Your application was not submitted.", "error");
-      }
+
+      await axios.post("/make-application", applicantInfo).then(async (res) => {
+        if (res.data.acknowledged) {
+          const emailInfo = {
+            user_name,
+            user_email,
+            message: `Your submitted Resume Link: ${resumeLink}`,
+          };
+          await emailjs
+            .send(
+              "service_aod4p0x",
+              "template_4kwyx6h",
+              emailInfo,
+              "rps7HsvPhdSnjADeo"
+            )
+            .then(() => {
+              Swal.fire(
+                "Success",
+                "Your application has been submitted, and a confirmation email has been sent.",
+                "success"
+              );
+            })
+            .catch((error) => {
+              console.error("Failed to send email:", error);
+              Swal.fire("Error", "Failed to send confirmation email", "error");
+            });
+
+          // Updating the applicant number in the database.
+          axios.post(`/job-application-number/${_id}`);
+        }
+      });
+    } else {
+      Swal.fire("Canceled", "Your application was not submitted.", "error");
     }
   };
 
@@ -96,7 +125,7 @@ const JobDetails = () => {
       </Helmet>
 
       <div className="grid md:grid-cols-5 gap-2">
-        <div className="md:col-span-3 pr-5 border-r-2 border-[#793FDF]">
+        <div className="md:col-span-3 pr-5 md:border-r-2 md:border-[#793FDF]">
           <img src={job_image} alt="" className="rounded drop-shadow-md" />
         </div>
         <div className="md:col-span-2 pl-5 space-y-4 flex flex-col justify-center">
@@ -104,10 +133,6 @@ const JobDetails = () => {
             <span className="font-lilita">Job Title: </span>
             {job_title}
           </h1>
-          <p className="text-lg">
-            <span className="font-normal font-lilita">Job Description: </span>
-            {job_description}
-          </p>
           <p className="text-lg">
             <span className="font-lilita">Posted By: </span>
             {user_name}
@@ -131,6 +156,12 @@ const JobDetails = () => {
             Apply Job
           </button>
         </div>
+      </div>
+      <div className="mt-10 shadow-md p-5">
+        <p className="text-lg">
+          <span className="font-normal font-lilita">Job Description: </span>
+          {job_description}
+        </p>
       </div>
     </div>
   );

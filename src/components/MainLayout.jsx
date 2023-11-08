@@ -126,11 +126,7 @@ const MainLayout = ({ children }) => {
           className="drawer-overlay"
         ></label>
         <div className="min-h-screen py-3 w-2/3 z-50 bg-white">
-          <img
-            src="/src/assets/web-logo.png"
-            alt="logo"
-            className="w-12 mx-auto"
-          />
+          <img src="/web-logo.png" alt="logo" className="w-12 mx-auto" />
           <ul className="menu p-1 space-y-3">{links}</ul>
         </div>
       </div>

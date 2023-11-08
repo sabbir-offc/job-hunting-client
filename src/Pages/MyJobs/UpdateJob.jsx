@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import useAxios from "../../hooks/useAxios";
@@ -16,7 +16,8 @@ const UpdateJob = () => {
     job_title,
     job_description,
     job_category,
-    job_salary,
+    minimum_salary,
+    maximum_salary,
     job_posting_data,
     job_application_deadline,
   } = job;
@@ -24,7 +25,9 @@ const UpdateJob = () => {
   const [deadlineDate, setDeadlineDate] = useState(
     new Date(job_application_deadline)
   );
-
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
   const axios = useAxios();
   const handleUpdateJob = (e) => {
     e.preventDefault();
@@ -33,7 +36,8 @@ const UpdateJob = () => {
     const job_title = form.job_title.value;
     const job_description = form.description.value;
     const job_category = form.job_category.value;
-    const job_salary = form.job_salary.value;
+    const minimum_salary = form.minimum_salary.value;
+    const maximum_salary = form.maximum_salary.value;
     const job_posting_data = postingDate;
     const job_application_deadline = deadlineDate;
 
@@ -44,7 +48,8 @@ const UpdateJob = () => {
       job_title,
       job_description,
       job_category,
-      job_salary,
+      minimum_salary,
+      maximum_salary,
       job_posting_data,
       job_application_deadline,
     };
@@ -101,41 +106,58 @@ const UpdateJob = () => {
           </label>
         </div>
 
+        <div className="relative z-0 w-full mb-6 group">
+          <select
+            defaultValue={job_category}
+            name="job_category"
+            className="select select-bordered w-full "
+          >
+            <option disabled selected>
+              Select Job Category
+            </option>
+            <option value="On Site Job">On Site Job</option>
+            <option value="Remote Job">Remote Job</option>
+            <option value="Hybrid">Hybrid</option>
+            <option value="Part Time">Part Time</option>
+          </select>
+          <label
+            htmlFor="job_salary"
+            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          ></label>
+        </div>
         <div className="grid md:grid-cols-2 md:gap-6">
-          <div className="relative z-0 w-full mb-6 group">
-            <select
-              defaultValue={job_category}
-              name="job_category"
-              className="select select-bordered w-full "
-            >
-              <option disabled selected>
-                Select Job Category
-              </option>
-              <option value="On Site Job">On Site Job</option>
-              <option value="Remote Job">Remote Job</option>
-              <option value="Hybrid">Hybrid</option>
-              <option value="Part Time">Part Time</option>
-            </select>
-            <label
-              htmlFor="job_salary"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            ></label>
-          </div>
           <div className="relative z-0 w-full mb-6 group">
             <input
               type="text"
-              name="job_salary"
-              id="job_salary"
-              defaultValue={job_salary}
+              name="minimum_salary"
+              id="minimum_salary"
+              defaultValue={minimum_salary}
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
             />
             <label
-              htmlFor="job_salary"
+              htmlFor="minimum_salary"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
-              Job Salary Range
+              Minimum Salary
+            </label>
+          </div>
+          <div className="relative z-0 w-full mb-6 group">
+            <input
+              type="text"
+              name="maximum_salary"
+              id="maximum_salary"
+              defaultValue={maximum_salary}
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              required
+            />
+            <label
+              htmlFor="maximum_salary"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Maximum Salary
             </label>
           </div>
         </div>

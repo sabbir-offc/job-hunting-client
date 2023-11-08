@@ -11,7 +11,8 @@ const JobCard = ({ job }) => {
     job_title,
     user_name,
     job_category,
-    job_salary,
+    minimum_salary,
+    maximum_salary,
     job_description,
     job_application_deadline,
   } = job;
@@ -47,7 +48,7 @@ const JobCard = ({ job }) => {
               {job_category}
             </span>
             <span className="mb-2 mr-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-[10px] font-semibold text-gray-900">
-              Salary: {job_salary} ৳
+              Salary: ৳{minimum_salary} - ৳{maximum_salary}
             </span>
           </div>
         </div>

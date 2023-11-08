@@ -17,7 +17,8 @@ const JobTable = ({ job }) => {
     job_title,
     user_name,
     job_category,
-    job_salary,
+    minimum_salary,
+    maximum_salary,
     job_application_deadline,
   } = job;
   useEffect(() => {
@@ -54,7 +55,7 @@ const JobTable = ({ job }) => {
   };
 
   return (
-    <tr className=" w-full">
+    <tr className=" w-full bg-base-300">
       <td>
         <div className="flex items-center space-x-3">
           <div className="avatar">
@@ -78,7 +79,13 @@ const JobTable = ({ job }) => {
           <span className="badge badge-ghost badge-sm">{job_category}</span>
         </td>
       )}
-      {location.pathname === "/my-jobs" ? "" : <td>Salary: {job_salary} ৳</td>}
+      {location.pathname === "/my-jobs" ? (
+        ""
+      ) : (
+        <td>
+          Salary: ৳{minimum_salary} - ৳{maximum_salary}{" "}
+        </td>
+      )}
       <th>
         {location.pathname === "/my-jobs" && (
           <div className="space-x-2">

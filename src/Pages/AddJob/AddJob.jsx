@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet";
 import useAuth from "../../hooks/useAuth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import useAxios from "../../hooks/useAxios";
@@ -11,6 +11,9 @@ const AddJob = () => {
   const [postingDate, setPostingDate] = useState(new Date());
   const [deadlineDate, setDeadlineDate] = useState(new Date());
   const axios = useAxios();
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
   const handleAddJob = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -20,7 +23,8 @@ const AddJob = () => {
     const job_description = form.description.value;
     const user_name = form.user_name.value;
     const job_category = form.job_category.value;
-    const job_salary = form.job_salary.value;
+    const minimum_salary = form.minimum_salary.value;
+    const maximum_salary = form.maximum_salary.value;
     const job_posting_data = postingDate;
     const job_application_deadline = deadlineDate;
     const job_application_number = parseInt(form.job_application_number.value);
@@ -34,7 +38,8 @@ const AddJob = () => {
       user_name,
       user_email,
       job_category,
-      job_salary,
+      minimum_salary,
+      maximum_salary,
       job_posting_data,
       job_application_deadline,
       job_application_number,
@@ -108,7 +113,7 @@ const AddJob = () => {
             User Name
           </label>
         </div>
-        <div className="grid md:grid-cols-2 md:gap-6">
+        <div className="">
           <div className="relative z-0 w-full mb-6 group">
             <select
               name="job_category"
@@ -127,20 +132,38 @@ const AddJob = () => {
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             ></label>
           </div>
+        </div>
+        <div className="grid md:grid-cols-2 md:gap-4">
           <div className="relative z-0 w-full mb-6 group">
             <input
               type="text"
-              name="job_salary"
-              id="job_salary"
+              name="minimum_salary"
+              id="minimum_salary"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
             />
             <label
-              htmlFor="job_salary"
+              htmlFor="minimum_salary"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
-              Job Salary Range
+              Minimum Salary
+            </label>
+          </div>
+          <div className="relative z-0 w-full mb-6 group">
+            <input
+              type="text"
+              name="maximum_salary"
+              id="maximum_salary"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              required
+            />
+            <label
+              htmlFor="maximum_salary"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Maximum Salary
             </label>
           </div>
         </div>
