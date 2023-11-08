@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ReactTable from "../AllJobs/ReactTable";
 import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
+import { Helmet } from "react-helmet";
 
 const Bookmarked = () => {
   const [jobs, setJobs] = useState(null);
@@ -15,6 +16,10 @@ const Bookmarked = () => {
   }, [axios, user]);
   return (
     <div>
+      <Helmet>
+        <title>Saved Jobs | Job Hunting</title>
+      </Helmet>
+
       <div className=" mt-10 w-fit mx-auto flex flex-col items-end">
         {jobs?.length > 0 ? (
           <section className="mx-auto w-full max-w-7xl px-4 py-4">

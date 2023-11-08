@@ -132,11 +132,11 @@ const JobDetails = () => {
       user_email,
       job_title,
       job_image,
-      bookmark,
       minimum_salary,
       maximum_salary,
+      bookmark,
     };
-    axios
+    await axios
       .post("/saved-jobs", savedJob)
       .then((res) => {
         console.log(res.data);
