@@ -5,13 +5,15 @@ import { Helmet } from "react-helmet";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
+import { Bookmark, BookmarkCheck } from "lucide-react";
+import toast from "react-hot-toast";
 const JobDetails = () => {
   const data = useLoaderData();
-  const job = data.data;
-  const axios = useAxios();
-
   const [deadline, setDeadline] = useState(null);
+  const axios = useAxios();
   const { user } = useAuth();
+  const job = data.data;
+  const [bookmark, setBookmark] = useState(false);
   const {
     _id,
     job_image,
@@ -25,19 +27,20 @@ const JobDetails = () => {
     job_application_deadline,
     job_application_number,
   } = job;
-  const today = new Date();
-  const deadlineDate = new Date(job_application_deadline);
 
   useEffect(() => {
     const deadlineDate = new Date(job_application_deadline);
     const year = deadlineDate.getFullYear();
-    const month = (deadlineDate.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
+    const month = (deadlineDate.getMonth() + 1).toString().padStart(2, "0");
     const day = deadlineDate.getDate().toString().padStart(2, "0");
     const formattedDate = `${day}-${month}-${year}`;
     setDeadline(formattedDate);
     emailjs.init("rps7HsvPhdSnjADeo");
     window.scroll(0, 0);
-  }, [job_application_deadline]);
+  }, [job_application_deadline, axios]);
+
+  const today = new Date();
+  const deadlineDate = new Date(job_application_deadline);
 
   const handleApply = async () => {
     const email = user?.email;
@@ -123,6 +126,27 @@ const JobDetails = () => {
     }
   };
 
+  const handleSave = async () => {
+    setBookmark(true);
+    const savedJob = {
+      user_email,
+      job_title,
+      job_image,
+      bookmark,
+      minimum_salary,
+      maximum_salary,
+    };
+    axios
+      .post("/saved-jobs", savedJob)
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.acknowledged) {
+          toast.success("This job is saved to your bookmark");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div className="max-w-7xl mx-auto">
       <Helmet>
@@ -133,7 +157,7 @@ const JobDetails = () => {
         <div className="md:col-span-3 md:pr-5 md:border-r-2 md:border-[#793FDF]">
           <img src={job_image} alt="" className="rounded drop-shadow-md" />
         </div>
-        <div className="md:col-span-2 md:pl-5 space-y-4 flex flex-col justify-center">
+        <div className="md:col-span-2 mt-5 md:mt-0 md:pl-5 space-y-4 flex flex-col justify-center">
           <h1 className="text-2xl md:text-4xl">
             <span className="font-lilita">Job Title: </span>
             {job_title}
@@ -154,13 +178,24 @@ const JobDetails = () => {
             <span className="font-lilita">Applicant Number: </span>
             {job_application_number}
           </p>
-          <button
-            onClick={handleApply}
-            disabled={user?.email === user_email ? true : false}
-            className="bg-[#7091F5] disabled:bg-gray-400  ease-in-out duration-500 hover:bg-[#793FDF] w-full py-3 text-white rounded"
-          >
-            Apply Job
-          </button>
+          <div className="flex items-center">
+            <button
+              onClick={handleApply}
+              disabled={user?.email === user_email ? true : false}
+              className="bg-[#7091F5] disabled:bg-gray-400  ease-in-out duration-500 hover:bg-[#793FDF] w-full py-3 text-white rounded"
+            >
+              Apply Job
+            </button>
+            {bookmark ? (
+              <button className="w-1/3">
+                <BookmarkCheck className="text-[#7091F5] w-full h-11"></BookmarkCheck>
+              </button>
+            ) : (
+              <button onClick={handleSave} className="w-1/3">
+                <Bookmark className="text-[#7091F5] w-full h-11"></Bookmark>
+              </button>
+            )}
+          </div>
         </div>
       </div>
       <div className="mt-10 shadow-md p-5 rounded">

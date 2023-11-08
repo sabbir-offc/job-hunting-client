@@ -36,6 +36,10 @@ const Register = () => {
         });
 
         updateProfile(user, { displayName: name, photoURL: image });
+        const userImage = image;
+        const email = user?.email;
+        const userInfo = { userImage, email };
+        axios.post("/users", userInfo);
         toast.success("Account Create Successfull.", { id: toastId });
       });
     } catch (error) {

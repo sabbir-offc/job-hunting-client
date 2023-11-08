@@ -17,6 +17,10 @@ const SocialLogin = () => {
         }
       });
       toast.success("Login Successfull.");
+      const userImage = res?.user?.photoURL;
+      const email = userEmail;
+      const userInfo = { userImage, email };
+      axios.post("/users", userInfo);
     });
   };
 

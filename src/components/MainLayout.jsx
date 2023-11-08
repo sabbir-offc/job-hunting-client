@@ -108,6 +108,9 @@ const MainLayout = ({ children }) => {
                       <Link to="/applied-jobs">Applied Jobs</Link>
                     </li>
                     <li>
+                      <Link to="/saved-jobs">Saved Jobs</Link>
+                    </li>
+                    <li>
                       <button
                         onClick={handleLogOut}
                         className="bg-[#7091F5] text-[#FFFD8C]"

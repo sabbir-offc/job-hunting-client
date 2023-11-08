@@ -12,6 +12,10 @@ import JobDetails from "../Pages/AllJobs/JobDetails";
 import useAxios from "../hooks/useAxios";
 import UpdateJob from "../Pages/MyJobs/UpdateJob";
 import AppliedJobs from "../Pages/AppliedJobs/AppliedJobs";
+import Blogs from "../Pages/Blogs/Blogs";
+import BlogDetails from "../Pages/Blogs/BlogDetails";
+import CreateBlog from "../Pages/Blogs/CreateBlog";
+import Bookmarked from "../Pages/Bookmarked/Bookmarked";
 
 const axios = useAxios();
 const router = createBrowserRouter([
@@ -63,6 +67,18 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "create-blog",
+        element: <CreateBlog></CreateBlog>,
+      },
+      {
+        path: "blogs",
+        element: <Blogs></Blogs>,
+      },
+      {
+        path: "blogs/:id",
+        element: <BlogDetails></BlogDetails>,
+      },
+      {
         path: "my-jobs",
         element: (
           <PrivateRoutes>
@@ -75,6 +91,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoutes>
             <AppliedJobs></AppliedJobs>
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "saved-jobs",
+        element: (
+          <PrivateRoutes>
+            <Bookmarked></Bookmarked>
           </PrivateRoutes>
         ),
       },

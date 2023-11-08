@@ -67,12 +67,16 @@ const ReactTable = ({ job }) => {
           </div>
           <div className="ml-4">
             <div className="text-sm font-medium text-gray-900">{job_title}</div>
-            <div className="text-sm text-gray-500">Posted By: {user_name}</div>
+            {location.pathname !== "/saved-jobs" && (
+              <div className="text-sm text-gray-500">
+                Posted By: {user_name}
+              </div>
+            )}
           </div>
         </div>
       </td>
       {location.pathname === "/all-jobs" && (
-        <td>
+        <td className="px-1">
           {deadline} <br />
         </td>
       )}
@@ -81,42 +85,50 @@ const ReactTable = ({ job }) => {
           Salary: ৳{minimum_salary} - ৳{maximum_salary}
         </p>
       </td>
-      {location.pathname === "/applied-jobs" ? (
+      {location.pathname === "/applied-jobs" ||
+      location.pathname === "/saved-jobs" ? (
         ""
       ) : (
         <td className="text-center">
           <p>{job_application_number}</p>
         </td>
       )}
-      <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-        {job_category}
-      </td>
-      <th className="px-3">
-        {location.pathname === "/my-jobs" && (
-          <div className="items-center justify-center flex gap-3">
-            <Link
-              to={`/update-job/${_id}`}
-              className="rounded-lg py-1 bg-[#793FDF] text-white  btn-sm"
-            >
-              Update
-            </Link>
-            <button
-              onClick={() => handleDelete(_id)}
-              className="rounded-lg bg-[#7091F5] text-white  btn-sm"
-            >
-              Delete
-            </button>
-          </div>
-        )}
-        {location.pathname === "/all-jobs" && (
-          <Link
-            to={`/job/${_id}`}
-            className="btn btn-ghost btn-xs bg-[#793FDF] text-white"
-          >
-            Details
-          </Link>
-        )}
-      </th>
+      {location.pathname !== "/saved-jobs" && (
+        <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+          {job_category}
+        </td>
+      )}
+      {location.pathname !== "/applied-jobs" &&
+        (location.pathname !== "/saved-jobs" ? (
+          <th className="px-3">
+            {location.pathname === "/my-jobs" && (
+              <div className="items-center justify-center flex gap-3">
+                <Link
+                  to={`/update-job/${_id}`}
+                  className="rounded-lg py-1 bg-[#793FDF] text-white  btn-sm"
+                >
+                  Update
+                </Link>
+                <button
+                  onClick={() => handleDelete(_id)}
+                  className="rounded-lg bg-[#7091F5] text-white  btn-sm"
+                >
+                  Delete
+                </button>
+              </div>
+            )}
+            {location.pathname === "/all-jobs" && (
+              <Link
+                to={`/job/${_id}`}
+                className="btn btn-ghost btn-xs bg-[#793FDF] text-white"
+              >
+                Details
+              </Link>
+            )}
+          </th>
+        ) : (
+          ""
+        ))}
     </tr>
   );
 };

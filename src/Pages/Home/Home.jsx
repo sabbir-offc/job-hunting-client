@@ -5,6 +5,8 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import JobCategoryTab from "../../components/JobCategoryTab";
 import { Helmet } from "react-helmet";
+import Faq from "../../components/Faq";
+import Feature from "../../components/Feature";
 const Home = () => {
   useEffect(() => {
     AOS.init();
@@ -26,6 +28,8 @@ const Home = () => {
         </h2>
         <JobCategoryTab></JobCategoryTab>
       </div>
+      <Faq></Faq>
+      <Feature></Feature>
     </div>
   );
 };
