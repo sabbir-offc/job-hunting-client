@@ -15,6 +15,7 @@ const JobCard = ({ job }) => {
     maximum_salary,
     job_description,
     job_application_deadline,
+    job_application_number,
   } = job;
   useEffect(() => {
     const deadlineDate = new Date(job_application_deadline);
@@ -51,6 +52,11 @@ const JobCard = ({ job }) => {
               Salary: ৳{minimum_salary} - ৳{maximum_salary}
             </span>
           </div>
+        </div>
+        <div>
+          <p className="mb-2 text-sm text-gray-600">
+            Applicant Number: {job_application_number}
+          </p>
         </div>
 
         <div className="w-full mt-3">

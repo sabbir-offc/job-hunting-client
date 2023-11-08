@@ -2,9 +2,13 @@ import { Helmet } from "react-helmet";
 import JobTable from "../AllJobs/JobTable";
 import useMyJobs from "../../hooks/useMyJobs";
 import { AlertCircle } from "lucide-react";
+import { useEffect } from "react";
 
 const MyJobs = () => {
   const { jobs } = useMyJobs();
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
   return (
     <div className="md:h-screen">
       <Helmet>

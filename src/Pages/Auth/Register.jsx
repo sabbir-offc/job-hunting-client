@@ -3,7 +3,7 @@ import SocialLogin from "./SocialLogin";
 import Lottie from "lottie-react";
 import Animation from "/public/Animation/registerAnimation.json";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import { updateProfile } from "firebase/auth";
@@ -12,6 +12,7 @@ import useAxios from "../../hooks/useAxios";
 const Register = () => {
   const { createUser } = useAuth();
   const axios = useAxios();
+  const navigate = useNavigate();
 
   const handleCreateUser = async (e) => {
     e.preventDefault();
@@ -23,15 +24,16 @@ const Register = () => {
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
-    const userInfo = {
-      image,
-      name,
-      email,
-      password,
-    };
+
     try {
       await createUser(email, password).then((res) => {
         const user = res.user;
+        const userEmail = res?.user?.email;
+        axios.post("/auth/access-token", { email: userEmail }).then((res) => {
+          if (res.data.success) {
+            navigate(location.state ? location.state : "/");
+          }
+        });
 
         updateProfile(user, { displayName: name, photoURL: image });
         toast.success("Account Create Successfull.", { id: toastId });
@@ -41,7 +43,7 @@ const Register = () => {
     }
   };
   return (
-    <section>
+    <section className="max-w-7xl mx-auto">
       <Helmet>
         <title>Register | Job Hunting</title>
       </Helmet>

@@ -54,12 +54,15 @@ const UpdateJob = () => {
       job_application_deadline,
     };
 
-    axios.put(`/jobs/${_id}`, jobData).then((res) => {
-      if (res.data.modifiedCount > 0) {
-        toast.success("Job Updated Successfully.", { id: toastId });
-        form.reset();
-      }
-    });
+    axios
+      .put(`/jobs/${_id}`, jobData)
+      .then((res) => {
+        if (res.data.modifiedCount > 0) {
+          toast.success("Job Updated Successfully.", { id: toastId });
+          form.reset();
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (

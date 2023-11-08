@@ -5,11 +5,12 @@ import { Toaster } from "react-hot-toast";
 
 const Root = () => {
   return (
-    <MainLayout>
+    <div>
+      <MainLayout></MainLayout>
       <Outlet></Outlet>
       <Footer></Footer>
       <Toaster></Toaster>
-    </MainLayout>
+    </div>
   );
 };
 

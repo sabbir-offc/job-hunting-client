@@ -24,12 +24,16 @@ const MainLayout = ({ children }) => {
         <NavLink to="/all-jobs">All Jobs</NavLink>
       </li>
 
-      <li>
-        <NavLink to="/add-job">Add a Job</NavLink>
-      </li>
-      <li>
-        <NavLink to="/my-jobs">My Jobs</NavLink>
-      </li>
+      {user && (
+        <div className="flex items-center gap-3">
+          <li>
+            <NavLink to="/add-job">Add a Job</NavLink>
+          </li>
+          <li>
+            <NavLink to="/my-jobs">My Jobs</NavLink>
+          </li>
+        </div>
+      )}
       <li>
         <NavLink to="/blogs">Blogs</NavLink>
       </li>

@@ -28,7 +28,6 @@ const AppliedJobs = () => {
         useCORS: true,
       },
     },
-    fileName: "applied_jobs.pdf",
   };
   const getTargetElement = () =>
     document.getElementById("applied-job-container");

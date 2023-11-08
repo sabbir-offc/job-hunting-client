@@ -1,3 +1,5 @@
+import Lottie from "lottie-react";
+import Animation from "/public/Animation/job.json";
 const Hero = () => {
   return (
     <div className="relative w-full">
@@ -47,10 +49,7 @@ const Hero = () => {
           data-aos-duration="1200"
           className="relative hidden lg:block lg:col-span-5 lg:-mr-8 xl:col-span-6"
         >
-          <img
-            className=" bg-gray-50 object-cover  rounded-lg"
-            src="/hero.jpg"
-          />
+          <Lottie animationData={Animation}></Lottie>
         </div>
       </div>
     </div>

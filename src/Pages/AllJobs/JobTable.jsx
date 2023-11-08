@@ -55,7 +55,7 @@ const JobTable = ({ job }) => {
   };
 
   return (
-    <tr className=" w-full bg-base-300">
+    <tr className="bg-base-300">
       <td>
         <div className="flex items-center space-x-3">
           <div className="avatar">
@@ -76,19 +76,25 @@ const JobTable = ({ job }) => {
       {location.pathname === "/all-jobs" && (
         <td>
           {deadline} <br />
-          <span className="badge badge-ghost badge-sm">{job_category}</span>
         </td>
       )}
       {location.pathname === "/my-jobs" ? (
         ""
       ) : (
+        <td className="w-fit">
+          <p className="text-base">
+            Salary: ৳{minimum_salary} - ৳{maximum_salary}
+          </p>
+        </td>
+      )}
+      {location.pathname === "/all-jobs" && (
         <td>
-          Salary: ৳{minimum_salary} - ৳{maximum_salary}{" "}
+          <p>{job_category}</p>
         </td>
       )}
       <th>
         {location.pathname === "/my-jobs" && (
-          <div className="space-x-2">
+          <div className="items-center justify-center flex gap-3">
             <Link
               to={`/update-job/${_id}`}
               className="rounded-lg py-1 bg-[#793FDF] text-white  btn-sm"

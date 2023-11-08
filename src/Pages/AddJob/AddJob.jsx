@@ -55,7 +55,7 @@ const AddJob = () => {
   };
 
   return (
-    <div className="max-w-7xl lg:mx-auto px-5 my-10">
+    <div className="w-fit lg:mx-auto px-5 my-10">
       <Helmet>
         <title>Add Job | Job Hunting</title>
       </Helmet>

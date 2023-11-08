@@ -18,7 +18,8 @@ const JobDetails = () => {
     job_title,
     user_name,
     user_email,
-    job_salary,
+    minimum_salary,
+    maximum_salary,
     job_description,
     job_application_deadline,
     job_application_number,
@@ -77,7 +78,8 @@ const JobDetails = () => {
       const applicantInfo = {
         job_title,
         job_image,
-        job_salary,
+        minimum_salary,
+        maximum_salary,
         user_name,
         user_email,
         resumeLink,
@@ -124,11 +126,11 @@ const JobDetails = () => {
         <title>Job Details | Job Hunting</title>
       </Helmet>
 
-      <div className="grid md:grid-cols-5 gap-2">
-        <div className="md:col-span-3 pr-5 md:border-r-2 md:border-[#793FDF]">
+      <div className="grid md:grid-cols-5 gap-2 my-10 place-items-center px-5">
+        <div className="md:col-span-3 md:pr-5 md:border-r-2 md:border-[#793FDF]">
           <img src={job_image} alt="" className="rounded drop-shadow-md" />
         </div>
-        <div className="md:col-span-2 pl-5 space-y-4 flex flex-col justify-center">
+        <div className="md:col-span-2 md:pl-5 space-y-4 flex flex-col justify-center">
           <h1 className="text-2xl md:text-4xl">
             <span className="font-lilita">Job Title: </span>
             {job_title}
@@ -138,10 +140,11 @@ const JobDetails = () => {
             {user_name}
           </p>
           <p className="text-lg">
-            <span className="font-lilita">Salary: </span>${job_salary}
+            <span className="font-lilita">Salary: </span>৳{minimum_salary} - ৳
+            {maximum_salary}
           </p>
           <p className="text-lg">
-            <span className="font-lilita">Job Deadline: </span>
+            <span className="font-lilita">Application Deadline: </span>
             {deadline}
           </p>
           <p className="text-lg">
@@ -157,7 +160,7 @@ const JobDetails = () => {
           </button>
         </div>
       </div>
-      <div className="mt-10 shadow-md p-5">
+      <div className="mt-10 shadow-md p-5 rounded">
         <p className="text-lg">
           <span className="font-normal font-lilita">Job Description: </span>
           {job_description}
