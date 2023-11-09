@@ -196,8 +196,12 @@ const JobDetails = () => {
                 <BookmarkCheck className="text-[#7091F5] w-full h-11"></BookmarkCheck>
               </button>
             ) : (
-              <button onClick={handleSave} className="w-1/3">
-                <Bookmark className="text-[#7091F5] w-full h-11"></Bookmark>
+              <button
+                disabled={user?.email === user_email ? true : false}
+                onClick={handleSave}
+                className="w-1/3 disabled:text-gray-400 text-[#7091F5]"
+              >
+                <Bookmark className=" w-full h-11"></Bookmark>
               </button>
             )}
           </div>

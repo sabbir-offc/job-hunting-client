@@ -69,10 +69,14 @@ const ReactTable = ({ job }) => {
           </div>
           <div className="ml-4">
             <div className="text-sm font-medium text-gray-900">{job_title}</div>
-            {location.pathname !== "/bookmarked-jobs" && (
+
+            {location.pathname !== "/bookmarked-jobs" &&
+            location.pathname !== "/applied-jobs" ? (
               <div className="text-sm text-gray-500">
                 Posted By: {user_name}
               </div>
+            ) : (
+              ""
             )}
           </div>
         </div>

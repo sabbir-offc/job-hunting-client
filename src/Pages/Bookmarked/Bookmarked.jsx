@@ -22,7 +22,7 @@ const Bookmarked = () => {
 
   if (isLoading) {
     return (
-      <div className="max-w-7xl mx-auto flex items-center justify-center">
+      <div className="max-w-7xl mx-auto my-10 flex items-center justify-center">
         <ContentSpinner></ContentSpinner>
       </div>
     );

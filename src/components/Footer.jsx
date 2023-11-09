@@ -3,8 +3,8 @@ import { Instagram } from "lucide-react";
 const Footer = () => {
   return (
     <section className="relative overflow-hidden py-10 bg-[#7091F5] ">
-      <div className=" z-10 mx-auto max-w-7xl px-4">
-        <div className="-m-6 flex items-center">
+      <div className="z-10 mx-auto max-w-7xl px-4">
+        <div className="-m-6 flex items-center flex-col md:flex-row">
           <div className="w-full p-6 md:w-1/2 lg:w-5/12">
             <div className="flex h-full flex-col justify-between">
               <div className="mb-4 inline-flex items-center">
@@ -22,7 +22,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="mt-5">
+          <div className="mt-5 text-center  md:text-left">
             <p className="font-semibold text-white">Contact Us</p>
 
             <div className="flex flex-col items-start mt-5 space-y-2">
