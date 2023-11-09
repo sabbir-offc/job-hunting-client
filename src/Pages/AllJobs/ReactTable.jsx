@@ -4,9 +4,11 @@ import useAxios from "../../hooks/useAxios";
 import useMyJobs from "../../hooks/useMyJobs";
 import { Link, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
+import useAppliedJobs from "../../hooks/useAppliedJobs";
 
 const ReactTable = ({ job }) => {
   const location = useLocation();
+  const { mutate } = useAppliedJobs();
   const axios = useAxios();
   const { refetch } = useMyJobs();
   const [deadline, setDeadline] = useState(null);
@@ -67,7 +69,7 @@ const ReactTable = ({ job }) => {
           </div>
           <div className="ml-4">
             <div className="text-sm font-medium text-gray-900">{job_title}</div>
-            {location.pathname !== "/saved-jobs" && (
+            {location.pathname !== "/bookmarked-jobs" && (
               <div className="text-sm text-gray-500">
                 Posted By: {user_name}
               </div>
@@ -86,20 +88,20 @@ const ReactTable = ({ job }) => {
         </p>
       </td>
       {location.pathname === "/applied-jobs" ||
-      location.pathname === "/saved-jobs" ? (
+      location.pathname === "/bookmarked-jobs" ? (
         ""
       ) : (
         <td className="text-center">
           <p>{job_application_number}</p>
         </td>
       )}
-      {location.pathname !== "/saved-jobs" && (
+      {location.pathname !== "/bookmarked-jobs" && (
         <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
           {job_category}
         </td>
       )}
       {location.pathname !== "/applied-jobs" &&
-        (location.pathname !== "/saved-jobs" ? (
+        (location.pathname !== "/bookmarked-jobs" ? (
           <th className="px-3">
             {location.pathname === "/my-jobs" && (
               <div className="items-center justify-center flex gap-3">
@@ -129,10 +131,21 @@ const ReactTable = ({ job }) => {
         ) : (
           ""
         ))}
+      {location.pathname === "/applied-jobs" && (
+        <td className="px-2">
+          <button
+            onClick={() => mutate(_id)}
+            className="bg-[#793FDF] btn btn-xs text-white"
+          >
+            Cancel Application
+          </button>
+        </td>
+      )}
     </tr>
   );
 };
 ReactTable.propTypes = {
   job: PropTypes.object,
+  handleCancel: PropTypes.func,
 };
 export default ReactTable;

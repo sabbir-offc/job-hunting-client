@@ -108,7 +108,7 @@ const MainLayout = ({ children }) => {
                       <Link to="/applied-jobs">Applied Jobs</Link>
                     </li>
                     <li>
-                      <Link to="/saved-jobs">Saved Jobs</Link>
+                      <Link to="/bookmarked-jobs">Saved Jobs</Link>
                     </li>
                     <li>
                       <button

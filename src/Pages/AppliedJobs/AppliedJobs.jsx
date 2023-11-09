@@ -98,6 +98,12 @@ const AppliedJobs = () => {
                           >
                             Job Category
                           </th>
+                          <th
+                            scope="col"
+                            className="px-2 py-3.5 text-left text-sm font-normal text-gray-500"
+                          >
+                            Action
+                          </th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-200 bg-white">

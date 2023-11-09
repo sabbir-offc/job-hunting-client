@@ -95,7 +95,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "saved-jobs",
+        path: "bookmarked-jobs",
         element: (
           <PrivateRoutes>
             <Bookmarked></Bookmarked>

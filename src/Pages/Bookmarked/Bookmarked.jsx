@@ -4,23 +4,40 @@ import ReactTable from "../AllJobs/ReactTable";
 import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
 import { Helmet } from "react-helmet";
+import { useQuery } from "@tanstack/react-query";
+import ContentSpinner from "../../components/ContentSplinner";
 
 const Bookmarked = () => {
-  const [jobs, setJobs] = useState(null);
+  // const [jobs, setJobs] = useState(null);
   const axios = useAxios();
   const { user } = useAuth();
-  useEffect(() => {
-    axios
-      .get(`/saved-jobs?user_email=${user?.email}`)
-      .then((res) => setJobs(res.data));
-  }, [axios, user]);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["savedJobs"],
+    queryFn: async () => {
+      const res = await axios.get(`/saved-jobs?email=${user?.email}`);
+      return res;
+    },
+  });
+
+  if (isLoading) {
+    return (
+      <div className="max-w-7xl mx-auto flex items-center justify-center">
+        <ContentSpinner></ContentSpinner>
+      </div>
+    );
+  }
+  const jobs = data?.data;
   return (
     <div>
       <Helmet>
         <title>Saved Jobs | Job Hunting</title>
       </Helmet>
 
-      <div className=" mt-10 w-fit mx-auto flex flex-col items-end">
+      <h1 className="text-3xl mt-8 font-bold text-center">
+        View Your Saved Jobs
+      </h1>
+      <div className=" mb-10 mx-auto flex flex-col items-end">
         {jobs?.length > 0 ? (
           <section className="mx-auto w-full max-w-7xl px-4 py-4">
             <div className="mt-6 flex flex-col">

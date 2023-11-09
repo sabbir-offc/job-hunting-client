@@ -12,6 +12,7 @@ const JobDetails = () => {
   const [deadline, setDeadline] = useState(null);
   const axios = useAxios();
   const { user } = useAuth();
+  const email = user?.email;
   const job = data.data;
   const [bookmark, setBookmark] = useState(false);
   const {
@@ -81,6 +82,7 @@ const JobDetails = () => {
       const user_name = name;
       resumeLink = formValues.resumeLink;
       const applicantInfo = {
+        jobId: _id,
         job_title,
         job_image,
         job_category,
@@ -92,6 +94,7 @@ const JobDetails = () => {
       };
 
       await axios.post("/make-application", applicantInfo).then(async (res) => {
+        console.log(res.data);
         if (res.data.acknowledged) {
           const emailInfo = {
             user_name,
@@ -119,6 +122,8 @@ const JobDetails = () => {
 
           // Updating the applicant number in the database.
           axios.post(`/job-application-number/${_id}`);
+        } else if (res.data.message === "You Already applied to this job.") {
+          Swal.fire("Error!", `${res.data.message}`, "error");
         }
       });
     } else {
@@ -129,7 +134,7 @@ const JobDetails = () => {
   const handleSave = async () => {
     setBookmark(true);
     const savedJob = {
-      user_email,
+      email,
       job_title,
       job_image,
       minimum_salary,
