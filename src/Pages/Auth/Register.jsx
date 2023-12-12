@@ -49,7 +49,7 @@ const Register = () => {
         updateProfile(user, { displayName: name, photoURL: image });
         const userImage = image;
         const email = user?.email;
-        const userInfo = { userImage, email };
+        const userInfo = { userImage, email, role: "worker" };
         axios.post("/users", userInfo);
         toast.success("Account Create Successfull.", { id: toastId });
       });

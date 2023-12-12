@@ -16,6 +16,7 @@ import Blogs from "../Pages/Blogs/Blogs";
 import BlogDetails from "../Pages/Blogs/BlogDetails";
 import CreateBlog from "../Pages/Blogs/CreateBlog";
 import Bookmarked from "../Pages/Bookmarked/Bookmarked";
+import UpdateUserProfile from "../Pages/UpdateUserProfile/UpdateUserProfile";
 
 const axios = useAxios();
 const router = createBrowserRouter([
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
       {
         path: "blogs/:id",
         element: <BlogDetails></BlogDetails>,
+      },
+      {
+        path: "update-profile",
+        element: <UpdateUserProfile />,
       },
       {
         path: "my-jobs",

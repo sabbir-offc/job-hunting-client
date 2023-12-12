@@ -19,7 +19,7 @@ const SocialLogin = () => {
       toast.success("Login Successfull.");
       const userImage = res?.user?.photoURL;
       const email = userEmail;
-      const userInfo = { userImage, email };
+      const userInfo = { userImage, email, role: "worker" };
       axios.post("/users", userInfo);
     });
   };
