@@ -18,9 +18,11 @@ Welcome to the client-side of our "Job Hunting" web project! This README provide
 
 5. **Security with JWT Token**: We take data security seriously at "Job Hunting." To protect user accounts and sensitive information, our application employs JWT (JSON Web Token) authentication. This ensures that only authorized users have access to specific features and data, enhancing the overall safety of our platform.
 
-### Getting Started
+## Getting Started
 
-To get started with our client-side code on "Job Hunting," please follow the installation and setup instructions provided in our project's documentation. Make sure to obtain the necessary dependencies and credentials to ensure a smooth experience.
+1. Clone the repository: `git clone https://github.com/sabbir-offc/job-hunting-client.git`
+2. Install dependencies: `npm install`
+3. Run the application: `npm start`
 
 **Live Link:** [Explore "Job Hunting" Online](https://job-hunting-cf12c.web.app/)
 
