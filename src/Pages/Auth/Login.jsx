@@ -6,12 +6,30 @@ import SocialLogin from "./SocialLogin";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
-import useAxios from "../../hooks/useAxios";
+import { useRef } from "react";
+import { sendPasswordResetEmail } from "firebase/auth";
+import auth from "../../Firebase/firebase.config";
 const Login = () => {
   const { loginUser } = useAuth();
   const location = useLocation();
-  const axios = useAxios();
   const navigate = useNavigate();
+  const emailRef = useRef();
+  console.log(emailRef.current?.value);
+  const handleForgotPass = async () => {
+    const email = emailRef.current?.value;
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        return toast.success(
+          `Password Reset link has been sent to this email: ${email}`
+        );
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+        toast.error(errorMessage);
+      });
+  };
   const handleLoginUser = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -19,20 +37,13 @@ const Login = () => {
     const password = form.password.value;
     const toastId = toast.loading("Logging...");
 
-    await loginUser(email, password)
-      .then((res) => {
-        const userEmail = res?.user?.email;
-        axios.post("/auth/access-token", { email: userEmail }).then((res) => {
-          if (res.data.success) {
-            navigate(location.state ? location.state : "/");
-          }
-        });
-        toast.success("Login Successfull.", { id: toastId });
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Login Failed.", { id: toastId });
-      });
+    try {
+      await loginUser(email, password);
+      navigate(location.state ? location.state : "/");
+      toast.success("Login Successfull.", { id: toastId });
+    } catch (error) {
+      toast.error("Login Failed.", { id: toastId });
+    }
   };
   return (
     <section className="max-w-7xl mx-auto">
@@ -62,6 +73,7 @@ const Login = () => {
                   </label>
                   <div className="mt-2">
                     <input
+                      ref={emailRef}
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="email"
                       name="email"
@@ -78,6 +90,13 @@ const Login = () => {
                     >
                       Password
                     </label>
+
+                    <span
+                      onClick={handleForgotPass}
+                      className="font-semibold hover:underline cursor-pointer"
+                    >
+                      Forgot password?
+                    </span>
                   </div>
                   <div className="mt-2">
                     <input

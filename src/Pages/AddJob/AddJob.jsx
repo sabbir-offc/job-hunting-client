@@ -6,10 +6,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import useAxios from "../../hooks/useAxios";
 import toast from "react-hot-toast";
 
+import { Select } from "antd";
 const AddJob = () => {
   const { user } = useAuth();
   const [postingDate, setPostingDate] = useState(new Date());
   const [deadlineDate, setDeadlineDate] = useState(new Date());
+  const [category, setCategory] = useState("onSite");
   const axios = useAxios();
   useEffect(() => {
     window.scroll(0, 0);
@@ -22,14 +24,13 @@ const AddJob = () => {
     const job_title = form.job_title.value;
     const job_description = form.description.value;
     const user_name = form.user_name.value;
-    const job_category = form.job_category.value;
+    const job_category = category;
     const minimum_salary = form.minimum_salary.value;
     const maximum_salary = form.maximum_salary.value;
     const job_posting_data = postingDate;
     const job_application_deadline = deadlineDate;
     const job_application_number = parseInt(form.job_application_number.value);
-    console.log(job_application_number);
-    const toastId = toast.loading("Job adding...");
+    const toastId = toast.loading("Job posting...");
 
     const jobData = {
       job_image,
@@ -48,12 +49,29 @@ const AddJob = () => {
 
     axios.post("/jobs", jobData).then((res) => {
       if (res.data) {
-        toast.success("Job Added Successfull.", { id: toastId });
+        toast.success("Job posted was Successfull.", { id: toastId });
         form.reset();
       }
     });
   };
-
+  const options = [
+    {
+      label: "On Site Job",
+      value: "onSite",
+    },
+    {
+      label: "Remote Joib",
+      value: "remote",
+    },
+    {
+      label: "Hybrid Job",
+      value: "hybrid",
+    },
+    {
+      label: "Part Time Job",
+      value: "partTime",
+    },
+  ];
   return (
     <div className="max-w-5xl mx-auto px-5 my-10">
       <Helmet>
@@ -115,22 +133,18 @@ const AddJob = () => {
         </div>
         <div className="">
           <div className="relative z-0 w-full mb-6 group">
-            <select
-              name="job_category"
-              className="select select-bordered w-full "
-            >
-              <option disabled selected>
-                Select Job Category
-              </option>
-              <option value="On Site Job">On Site Job</option>
-              <option value="Remote Job">Remote Job</option>
-              <option value="Hybrid">Hybrid</option>
-              <option value="Part Time">Part Time</option>
-            </select>
-            <label
-              htmlFor="job_salary"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            ></label>
+            <label htmlFor="jobCategory" className="text-sm text-gray-900">
+              Select Job category
+            </label>
+            <div className="mt-2">
+              <Select
+                id="jobCategory"
+                defaultValue="onSite"
+                style={{ width: "100%", height: "35px" }}
+                options={options}
+                onChange={setCategory}
+              />
+            </div>
           </div>
         </div>
         <div className="grid md:grid-cols-2 md:gap-4">
@@ -214,13 +228,12 @@ const AddJob = () => {
         </div>
         <div className="relative z-0 w-full my-6 group">
           <input
-            type="text"
+            type="number"
             name="job_application_number"
             id="job_application_number"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             defaultValue={0}
-            readOnly
             required
           />
           <label

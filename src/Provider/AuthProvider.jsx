@@ -9,6 +9,7 @@ import {
   signOut,
 } from "firebase/auth";
 import auth from "../Firebase/firebase.config";
+import { clearCookie, getToken } from "../api/auth";
 export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
   //store the user info
@@ -43,13 +44,19 @@ const AuthProvider = ({ children }) => {
 
   //observing the current user
   useEffect(() => {
-    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      setLoading(false);
+      if (currentUser) {
+        const userInfo = { email: currentUser.email };
+        getToken(userInfo);
+        setLoading(false);
+      } else {
+        clearCookie();
+        setLoading(false);
+      }
     });
-
     return () => {
-      return unSubscribe();
+      return unsubscribe();
     };
   }, []);
   console.log(user);

@@ -8,18 +8,19 @@ import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import { updateProfile } from "firebase/auth";
 import useAxios from "../../hooks/useAxios";
-
+import { Select } from "antd";
+import { useState } from "react";
+import { imageUpload } from "../../api/imageUpload";
 const Register = () => {
   const { createUser } = useAuth();
   const axios = useAxios();
   const navigate = useNavigate();
+  const [role, setRole] = useState("");
+  const [uploadedImage, setUploadedImage] = useState(null);
 
   const handleCreateUser = async (e) => {
     e.preventDefault();
-
     const form = e.target;
-
-    const image = form.image.value;
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
@@ -35,7 +36,7 @@ const Register = () => {
       );
     }
     const toastId = toast.loading("Account Creating...");
-
+    const { data } = await imageUpload(uploadedImage);
     try {
       await createUser(email, password).then((res) => {
         const user = res.user;
@@ -45,31 +46,42 @@ const Register = () => {
             navigate(location.state ? location.state : "/");
           }
         });
-
-        updateProfile(user, { displayName: name, photoURL: image });
-        const userImage = image;
+        updateProfile(user, { displayName: name, photoURL: data.display_url });
+        const userImage = data.display_url;
         const email = user?.email;
-        const userInfo = { userImage, email, role: "worker" };
-        axios.post("/users", userInfo);
+        const userInfo = { userImage, email, role };
+
         toast.success("Account Create Successfull.", { id: toastId });
       });
     } catch (error) {
       toast.error(error.message, { id: toastId });
     }
   };
+
+  const options = [
+    {
+      label: "Job Seeker",
+      value: "jobSeeker",
+    },
+    {
+      label: "Employer",
+      value: "employer",
+    },
+  ];
+
   return (
     <section className="max-w-7xl mx-auto">
       <Helmet>
         <title>Register | Job Hunting</title>
       </Helmet>
-      <div className="flex items-center justify-evenly flex-col-reverse md:flex-row md:h-screen">
+      <div className="flex items-center justify-evenly flex-col-reverse md:flex-row md:min-h-screen">
         <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
           <div className="w-fit">
             <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl">
               Register
             </h2>
             <p className="mt-2 text-sm text-gray-600">
-              Already have an account?
+              Already have an account?{" "}
               <button className="font-semibold text-black transition-all duration-200 hover:underline">
                 <Link to="/login">Login to your account</Link>
               </button>
@@ -78,19 +90,18 @@ const Register = () => {
               <div className="space-y-5">
                 <div>
                   <label
-                    htmlFor="image"
+                    htmlFor="name"
                     className="text-base font-medium text-gray-900"
                   >
-                    Photo Url
+                    Upload Your Image
                   </label>
                   <div className="mt-2">
                     <input
-                      className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                      type="url"
-                      name="image"
-                      id="image"
-                      placeholder="Enter Photo URL"
-                    ></input>
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setUploadedImage(e.target.files[0])}
+                      className="file-input file-input-bordered w-full"
+                    />
                   </div>
                 </div>
                 <div>
@@ -108,6 +119,25 @@ const Register = () => {
                       id="name"
                       placeholder="Enter Your Name."
                     ></input>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="role"
+                    className="text-base font-medium text-gray-900"
+                  >
+                    Who You Are?
+                  </label>
+                  <div className="mt-2">
+                    <Select
+                      defaultValue="Employer"
+                      onChange={setRole}
+                      style={{
+                        width: "100%",
+                        height: "35px",
+                      }}
+                      options={options}
+                    />
                   </div>
                 </div>
                 <div>

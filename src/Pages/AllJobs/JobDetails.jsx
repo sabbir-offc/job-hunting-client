@@ -7,6 +7,7 @@ import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
 import { Bookmark, BookmarkCheck } from "lucide-react";
 import toast from "react-hot-toast";
+
 const JobDetails = () => {
   const data = useLoaderData();
   const [deadline, setDeadline] = useState(null);
@@ -151,6 +152,10 @@ const JobDetails = () => {
       })
       .catch((err) => console.log(err));
   };
+  const progressWheel = document.querySelector(".progress");
+  scroll((progress) => {
+    progressWheel.style.strokeDasharray = `${progress}, 1`;
+  });
 
   return (
     <div className="max-w-7xl mx-auto">
